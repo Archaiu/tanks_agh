@@ -1,10 +1,13 @@
 package org.example;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Translate;
+import javafx.util.Duration;
 
 import java.io.IOException;
 

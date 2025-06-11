@@ -57,7 +57,7 @@ public class Beginning extends Application {
             System.out.println("DEBUG: Beginning.stage w tryToCreateUser(): " + stage);
             number = UserInfo.CreateUser(stage, this, loginButtom.getText());
             System.out.println("Go to load uni Scene");
-            UserInfo.getUni(number).showUni();
+            UserInfo.getClasess(number).get_uni().showUni();
         } catch (IllegalArgumentException e)
         {
             nameSetted.setText(e.getMessage() + ", give valid name");

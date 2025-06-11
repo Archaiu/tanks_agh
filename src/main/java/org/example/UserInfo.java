@@ -1,5 +1,6 @@
 package org.example;
 
+import com.sun.tools.javac.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -36,22 +37,14 @@ public class UserInfo {
     private static int _length = 0;
     private String _name;
     private String _photo;
-    private Beginning _beginning;
-    private Uni _uni;
-    private Stage _stage;
     private Tank _tank;
-    private MainPage _main = new MainPage();
+    private Clasess _clasess;
     public void setName(String newName) { _name=newName; }
     public void setPhoto(String newPhoto) { _photo=newPhoto; }
-    public void setBeginning (Beginning newBeginning) { _beginning=newBeginning; }
-    public void setStage(Stage newStage) {_stage=newStage; }
-    public void setUni(Uni newUni) { _uni=newUni; }
-    public static Stage getStage(int number) { return _users[number]._stage; }
-    public static Uni getUni(int number) { return _users[number]._uni; }
-    public static Image getPhoto(int i){return photos[i];}
-    public static MainPage getMain( int number) { return _users[number]._main; }
+    public static ImageView getPhoto(int i) { return UserInfo[i]._photo}
     public static Tank getTank(int number) { return _users[number]._tank; }
     public static void setTank(int nunber, Tank tank) { _users[nunber]._tank=tank; }
+    public static Clasess getClasess(int number) { return _users[number]._clasess; }
     public static int CreateUser(Stage stage, Beginning beginning, String name) throws Exception
     {
         System.out.println("Try to create user");
@@ -65,9 +58,6 @@ public class UserInfo {
         System.out.println("Everything seems correct");
         _users[_length] = new UserInfo();
         _users[_length].setName(name);
-        _users[_length].setBeginning(beginning);
-        _users[_length].setStage(stage);
-        _users[_length].setUni(new Uni(_length));
         _length++;
         return _length-1;
     }

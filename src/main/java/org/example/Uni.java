@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class Uni {
     @FXML
@@ -33,7 +34,7 @@ public class Uni {
         } catch (Exception ex) {
             System.out.println("Error in loading Uni scene");
             ex.printStackTrace();
-            UserInfo.getStage(_number).close();
+            UserInfo.getClasess(_number).get_stage().close();
             System.exit(0);
         }
         setUpButtons();
@@ -47,10 +48,10 @@ public class Uni {
             buttons[i].setGraphic(wrapper);
         }
         System.out.println("Photos to Uni loaded");
-        UserInfo.getStage(_number).setScene(scene);
+        UserInfo.getClasess(_number).get_stage().setScene(scene);
     }
 
-    public void confirmUni(ActionEvent event)
+    public void confirmUni(ActionEvent event) throws IOException
     {
         if ( !_choise ) {
             return;
@@ -68,6 +69,7 @@ public class Uni {
         _pane.getChildren().clear();
         StackPane tankView = UserInfo.getTank(_number).getVObjectToDisplay();
         _pane.getChildren().add(tankView);
+        UserInfo.getClasess(_number).get_mainPage().showMainPage();
 //        AnchorPane.setTopAnchor(tankView, 0.0);
 //        AnchorPane.setRightAnchor(tankView, 0.0);
 //        AnchorPane.setBottomAnchor(tankView, 0.0);
