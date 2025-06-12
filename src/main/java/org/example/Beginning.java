@@ -42,7 +42,8 @@ public class Beginning extends Application {
 
 
         stage.setTitle("Tanks AGH");
-        stage.setResizable(false);
+//        stage.setResizable(false);
+//        stage.setFullScreen(true);
         Scene scene = new Scene(root);
         stage.setScene(scene);
 

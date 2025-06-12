@@ -12,22 +12,22 @@ import java.io.IOException;
 //
 public class MainPage{
     @FXML
-    private AnchorPane mainPlansza;
     int _number;
     public void showMainPage()
     {
         System.out.println("Try to load mainPage");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/mainPage.fxml"));
         Parent root = null;
+        Controller contr= UserInfo.getClasess(_number).get_controller();
         try {
+            fxmlLoader.setController(contr);
             root = fxmlLoader.load();
-            mainPlansza = ((Controller)fxmlLoader.getController()).getMainPlansza();
         } catch (IOException e) {
             System.out.println("Can't load mainPage.fxml");
         }
         Scene scene = new Scene(root);
         Tank tank = UserInfo.getTank(_number);
-        mainPlansza.getChildren().add(tank.getVObjectToDisplay());
+        contr.addTank(tank);
         Stage stage = UserInfo.getClasess(_number).get_stage();
         stage.setScene(scene);
 

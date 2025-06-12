@@ -35,16 +35,21 @@ public class UserInfo {
     }
     private static UserInfo [] _users = new UserInfo [8];
     private static int _length = 0;
+
     private String _name;
     private String _photo;
     private Tank _tank;
     private Clasess _clasess;
+
     public void setName(String newName) { _name=newName; }
     public void setPhoto(String newPhoto) { _photo=newPhoto; }
-    public static ImageView getPhoto(int i) { return UserInfo[i]._photo}
+
+    public static Image getPhoto(int i){return photos[i];}
     public static Tank getTank(int number) { return _users[number]._tank; }
-    public static void setTank(int nunber, Tank tank) { _users[nunber]._tank=tank; }
     public static Clasess getClasess(int number) { return _users[number]._clasess; }
+
+    public static void setTank(int nunber, Tank tank) { _users[nunber]._tank=tank; }
+
     public static int CreateUser(Stage stage, Beginning beginning, String name) throws Exception
     {
         System.out.println("Try to create user");
@@ -58,6 +63,7 @@ public class UserInfo {
         System.out.println("Everything seems correct");
         _users[_length] = new UserInfo();
         _users[_length].setName(name);
+        _users[_length]._clasess = new Clasess(_length, beginning, stage);
         _length++;
         return _length-1;
     }
