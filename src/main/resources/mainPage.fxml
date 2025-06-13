@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane fx:id="mainPlansza" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Line endX="537.0" endY="38.0" startX="56.0" startY="38.0" />
+      <Line endX="537.0" endY="38.0" startX="537.0" startY="350.0" />
+      <Line endX="537.0" endY="350.0" startX="56.0" startY="350.0" />
+      <Line endX="56.0" endY="38.0" startX="56.0" startY="350.0" />
+   </children>
+</AnchorPane>

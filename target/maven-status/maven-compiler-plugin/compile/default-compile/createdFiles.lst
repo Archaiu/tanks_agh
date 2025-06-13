@@ -1,6 +1,8 @@
 org\example\MainPage.class
 org\example\Controller.class
+org\example\Clasess.class
 org\example\Tank.class
 org\example\UserInfo.class
 org\example\Uni.class
+org\example\Controller$Timer.class
 org\example\Beginning.class

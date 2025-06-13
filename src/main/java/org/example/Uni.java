@@ -13,19 +13,24 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class Uni {
     @FXML
     private AnchorPane  _pane;
+
     private int _number;
     private boolean _choise = false;
+
     @FXML
     RadioButton button1, button2, button3, button4, button5, button6, button7, button8;
     RadioButton []buttons = new RadioButton[8];
+
     public Uni(int number) {_number = number; }
     public void showUni(){
         System.out.println("Try to load Uni scene");
         Parent root = null;
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/uni.fxml"));
             fxmlLoader.setController(this);
@@ -33,24 +38,28 @@ public class Uni {
         } catch (Exception ex) {
             System.out.println("Error in loading Uni scene");
             ex.printStackTrace();
-            UserInfo.getStage(_number).close();
+            UserInfo.getClasess(_number).get_stage().close();
             System.exit(0);
         }
+
         setUpButtons();
         Scene scene = new Scene(root);
         System.out.println("Uni scene Loaded");
+
         for (int i = 0; i < 8; i++)
         {
             ImageView wrapper = new ImageView(UserInfo.getPhoto(i));
             wrapper.setFitHeight(50);
             wrapper.setFitWidth(50);
+
             buttons[i].setGraphic(wrapper);
         }
+
         System.out.println("Photos to Uni loaded");
-        UserInfo.getStage(_number).setScene(scene);
+        UserInfo.getClasess(_number).get_stage().setScene(scene);
     }
 
-    public void confirmUni(ActionEvent event)
+    public void confirmUni(ActionEvent event) throws IOException
     {
         if ( !_choise ) {
             return;
@@ -68,6 +77,7 @@ public class Uni {
         _pane.getChildren().clear();
         StackPane tankView = UserInfo.getTank(_number).getVObjectToDisplay();
         _pane.getChildren().add(tankView);
+        UserInfo.getClasess(_number).get_mainPage().showMainPage();
 //        AnchorPane.setTopAnchor(tankView, 0.0);
 //        AnchorPane.setRightAnchor(tankView, 0.0);
 //        AnchorPane.setBottomAnchor(tankView, 0.0);
