@@ -18,7 +18,7 @@ public class Tank {
     Translate translate;
     Rotate rotate;
     Random rand;
-    double step= 0.5;
+    double step= 1;
 
     public Tank(int number)
     {
@@ -67,29 +67,44 @@ public class Tank {
     {
 
         double radians = Math.toRadians(360 - rotate.getAngle());
-        System.out.println("Kat: " + Double.toString(360-rotate.getAngle()));
+//        System.out.println("Kat: " + Double.toString(360-rotate.getAngle()));
         double directionalCoefficient = Math.tan(radians);
         double offsetParameter = translate.getY() - directionalCoefficient * translate.getX();
-        boolean mouseOverLine = y > (directionalCoefficient * x + offsetParameter);
+//        System.out.println("Ankle: " + Double.toString(360-rotate.getAngle()) + "Cords A " + directionalCoefficient + " Cords b:" + offsetParameter);
+        boolean turnLeft;
+        double angleBetweenTankAndMouse = Math.atan2(-y+translate.getY(), x-translate.getX());
+        if (angleBetweenTankAndMouse < 0)
+        {
+            angleBetweenTankAndMouse = 2*Math.PI + angleBetweenTankAndMouse;
+        }
+        if ( angleBetweenTankAndMouse < radians && angleBetweenTankAndMouse +2*Math.PI -radians < Math.PI || angleBetweenTankAndMouse > radians && angleBetweenTankAndMouse - radians < Math.PI)
+        {
+            turnLeft = true;
+        }
+        else
+        {
+            turnLeft = false;
+        }
+        System.out.println("Ankle of tank: "+ Double.toString(360-rotate.getAngle()) + " Ankle of mouse: " + Math.toDegrees(angleBetweenTankAndMouse)+" turnLeft: " + turnLeft);
         double VerticalStep = Math.sin(radians) * step;
         double HorizontalStep = Math.cos(radians) * step;
         if ( flag )
         {
             translate.setY(translate.getY() + VerticalStep);
-            translate.setX(translate.getX() + HorizontalStep);
+            translate.setX(translate.getX() - HorizontalStep);
         }
         else
         {
             translate.setY(translate.getY() - VerticalStep);
-            translate.setX(translate.getX() - HorizontalStep);
+            translate.setX(translate.getX() + HorizontalStep);
         }
-        if ( flag && mouseOverLine || !flag && !mouseOverLine)
+        if ( flag && turnLeft || !flag && !turnLeft)
         {
-            rotate.setAngle((rotate.getAngle() + 0.5)%360);
+            rotate.setAngle(((rotate.getAngle() + 1.5)+ 360)%360);
         }
         else
         {
-            rotate.setAngle((rotate.getAngle() - 0.5)%360);
+            rotate.setAngle(((rotate.getAngle() - 1.5)+ 360)%360);
         }
     }
 

@@ -7,10 +7,14 @@ import javafx.scene.layout.StackPane;
 
 public class Controller {
 
+    private double xCord = 0;
+    private double yCord = 0;
+    private boolean left;
     @FXML
     private AnchorPane mainPlansza;
-    int _number;
-    Timer timer;
+    private int _number;
+    private Timer timer;
+    private Tank threadTank;
     public AnchorPane getMainPlansza()
     {
         System.out.println("AnchorPane returned!");
@@ -30,15 +34,15 @@ public class Controller {
                 return;
             }
             System.out.println("Czolg rusza");
-            boolean flag;
             if ( event.isPrimaryButtonDown())
             {
-                flag = true;
+                left = true;
             }
             else {
-                flag = false;
+                left = false;
             }
-            timer = new Timer(tank,event.getX(),event.getY(),flag);
+            threadTank = tank;
+            timer = new Timer();
             timer.start();
 
         });
@@ -50,6 +54,19 @@ public class Controller {
                 timer.stop();
             }
         });
+        mainPlansza.setOnMouseDragged(event ->
+        {
+            xCord = event.getX();
+            yCord = event.getY();
+            if (event.isPrimaryButtonDown() && ! event.isSecondaryButtonDown())
+            {
+                left = true;
+            }
+            else if ( !event.isPrimaryButtonDown() && event.isSecondaryButtonDown())
+            {
+                left = false;
+            }
+        });
         StackPane tankToDisplay = tank.getVObjectToDisplay();
         System.out.println("Cords: " + tank.getTranslate().getX() + ", " +tank.getTranslate().getY() + "Ankle: " + Double.toString(360-tank.getRotate().getAngle()));
         mainPlansza.getChildren().add(tank.getVObjectToDisplay());
@@ -57,23 +74,9 @@ public class Controller {
     }
     class Timer extends AnimationTimer
     {
-        private Tank threadTank;
-        private long startTime;
-        private double xCord;
-        private double yCord;
-        private boolean left;
+        private long startTime = System.currentTimeMillis();
         int counter = 30;
 
-
-        Timer(Tank tank, double x, double y,  boolean flag)
-        {
-            System.out.println("Tworzy się AnimationTimer");
-            threadTank = tank;
-            startTime = System.currentTimeMillis();
-            xCord = x;
-            yCord = y;
-            left = flag;
-        }
         public void handle(long now)
         {
             if ( now > startTime + 10000000 )
