@@ -4,6 +4,10 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+
+import javax.management.BadAttributeValueExpException;
 
 public class Controller {
 
@@ -15,6 +19,16 @@ public class Controller {
     private int _number;
     private Timer timer;
     private Tank threadTank;
+    @FXML
+    private Line leftWall;
+    @FXML
+    private Line rightWall;
+    @FXML
+    private Line topWall;
+    @FXML
+    private Line bottomWall;
+    @FXML
+    private Rectangle box1, box2, box3;
     public AnchorPane getMainPlansza()
     {
         System.out.println("AnchorPane returned!");
@@ -44,7 +58,6 @@ public class Controller {
             threadTank = tank;
             timer = new Timer();
             timer.start();
-
         });
         mainPlansza.setOnMouseReleased( event ->
         {
@@ -82,7 +95,7 @@ public class Controller {
             if ( now > startTime + 10000000 )
             {
                 if (counter > 0) {
-                    threadTank.moveTank(xCord, yCord, left);
+                    threadTank.moveTank(xCord, yCord, left, mainPlansza);
                     startTime = now;
                 }
                 else {
@@ -90,5 +103,26 @@ public class Controller {
                 }
             }
         }
+    }
+    public Line getLine(String word) throws BadAttributeValueExpException
+    {
+        return switch (word)
+        {
+            case "left" -> leftWall;
+            case "right" -> rightWall;
+            case "top" -> topWall;
+            case "bottom" -> bottomWall;
+            default -> throw new BadAttributeValueExpException(word);
+        };
+    }
+    public Rectangle getRectangle(int number) throws BadAttributeValueExpException
+    {
+        return switch (number)
+        {
+            case 1 -> box1;
+            case 2 -> box2;
+            case 3 -> box3;
+            default -> throw new BadAttributeValueExpException(number);
+        };
     }
 }
