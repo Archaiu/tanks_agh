@@ -77,7 +77,7 @@ public class Tank {
 
     public void moveTank(double x, double y, boolean flag, AnchorPane pane)
     {
-//        setCircles(pane);
+        setCircles(pane);
 
 
 
@@ -88,7 +88,7 @@ public class Tank {
         rotate.setAngle(((rotate.getAngle() + threeElements.nextAnkle())+ 360)%360);
 
 
-//        moveCircles();
+        moveCircles();
 
         if (!checkIfThereIsCollision(calculateCorners()))
         {
@@ -96,7 +96,7 @@ public class Tank {
         }
         rotate.setAngle(((rotate.getAngle() - threeElements.nextAnkle())+ 360)%360);
         translate.setY(translate.getY() - threeElements.nextVerticalStep);
-//        moveCircles();
+        moveCircles();
         if (!checkIfThereIsCollision(calculateCorners()))
         {
             return;
@@ -109,7 +109,7 @@ public class Tank {
             return;
         }
         translate.setY(translate.getY() - threeElements.nextVerticalStep);
-//        moveCircles();
+        moveCircles();
     }
 
     private void setCordsToSpawnTank()
@@ -174,36 +174,23 @@ public class Tank {
     public double[][] calculateCorners()
     {
         double[][] corners = new double[4][2];
-        double width = 25; // Szerokość obrazka czołgu
-        double height = 15; // Wysokość obrazka czołgu
+        double width = 25;
+        double height = 15;
 
-        // Normalizacja kąta JavaFX do zakresu [0, 360) zgodnie z ruchem wskazówek zegara
         double angleDegreesJavaFX = rotate.getAngle();
 
-
-        // --- Kluczowa zmiana: nie używamy już visualCenterX/Y w sposób bezpośredni jako centrum obrotu ---
-        // Punkt obrotu dla StackPane jest jego lokalnym (0,0), które po translacji translate.getX/Y
-        // znajduje się na scenie w translate.getX(), translate.getY().
-        // To jest czerwona kropka, którą widzisz.
-        double pivotSceneX = translate.getX(); // Punkt obrotu na scenie
-        double pivotSceneY = translate.getY(); // Punkt obrotu na scenie
+        double pivotSceneX = translate.getX();
+        double pivotSceneY = translate.getY();
 
         double halfWidth = width / 2.0;
         double halfHeight = height / 2.0;
 
-        // Wierzchołki StackPane w jego lokalnym układzie (od 0,0)
-        // Zakładamy, że obrazek czołgu jest centrowany wewnątrz StackPane.
-        // Zatem wierzchołki samego StackPane to:
         Point2D[] localStackPaneCorners = new Point2D[4];
-        localStackPaneCorners[0] = new Point2D(0, 0); // Top-left
-        localStackPaneCorners[1] = new Point2D(width, 0); // Top-right
-        localStackPaneCorners[2] = new Point2D(width, height); // Bottom-right
-        localStackPaneCorners[3] = new Point2D(0, height); // Bottom-left
+        localStackPaneCorners[0] = new Point2D(0, 0);
+        localStackPaneCorners[1] = new Point2D(width, 0);
+        localStackPaneCorners[2] = new Point2D(width, height);
+        localStackPaneCorners[3] = new Point2D(0, height);
 
-        // Kąt w radianach dla Math.cos/sin (przeciwnie do ruchu wskazówek zegara, 0 wzdłuż dodatniej osi X)
-        // JavaFX Rotate: 0 deg = góra (-Y), rośnie CW.
-        // Standard Math: 0 deg = prawo (+X), rośnie CCW.
-        // Mapowanie: Math_Angle = JavaFX_Angle - 90
         double finalAngleRadians = Math.toRadians(angleDegreesJavaFX);
 
         double cosAngle = Math.cos(finalAngleRadians);
@@ -213,13 +200,9 @@ public class Tank {
             double x_local_to_pivot = localStackPaneCorners[i].getX();
             double y_local_to_pivot = localStackPaneCorners[i].getY();
 
-            // Zastosowanie standardowej macierzy obrotu wokół (0,0) lokalnego StackPane
-            // x' = x*cos(angle) - y*sin(angle)
-            // y' = x*sin(angle) + y*cos(angle)
             double x_rotated_relative_to_pivot = x_local_to_pivot * cosAngle - y_local_to_pivot * sinAngle;
             double y_rotated_relative_to_pivot = x_local_to_pivot * sinAngle + y_local_to_pivot * cosAngle;
 
-            // Dodajemy współrzędne punktu obrotu (translate.getX/Y) aby uzyskać finalne współrzędne na scenie
             corners[i][0] = pivotSceneX + x_rotated_relative_to_pivot;
             corners[i][1] = pivotSceneY + y_rotated_relative_to_pivot;
         }
@@ -270,7 +253,7 @@ public class Tank {
             return;
         }
         double[][] corners = calculateCorners();
-        for ( int i = 0; i < corners.length-1; i++ )
+        for ( int i = 0; i < corners.length; i++ )
         {
             _cordsOfTank[i].translate.setX(corners[i][0]);
             _cordsOfTank[i].translate.setY(corners[i][1]);
