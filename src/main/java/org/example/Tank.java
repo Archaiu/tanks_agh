@@ -1,16 +1,12 @@
 package org.example;
 
-import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import javafx.util.Duration;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 public class Tank {
@@ -18,102 +14,128 @@ public class Tank {
     Translate translate;
     Rotate rotate;
     Random rand;
-    double step= 1;
+    double step = 1;
 
-    public Tank(int number)
-    {
+    // Zmieniony konstruktor, przyjmuje uniIndex
+    public Tank(int uniIndex) {
         Image tankPhoto = null;
-
         ImageView tankObject;
 
-
-        tankPhoto = new Image(getClass().getResourceAsStream("/tank.jpg"));
-        if (tankPhoto == null)
-        {
-            System.out.println("Error: tankPhoto is null");
-            System.exit(0);
+        // Ładowanie obrazka czołgu
+        try (InputStream tankIs = getClass().getResourceAsStream("/tank.jpg")) {
+            if (tankIs == null) {
+                System.err.println("BŁĄD: Nie znaleziono obrazka czołgu: /tank.jpg. Sprawdź ścieżkę zasobu.");
+                System.exit(1);
+            }
+            tankPhoto = new Image(tankIs);
+        } catch (Exception e) {
+            System.err.println("BŁĄD podczas ładowania obrazka czołgu: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
         }
+
         tankObject = new ImageView(tankPhoto);
+        tankObject.setFitWidth(50);
+        tankObject.setFitHeight(50);
+        tankObject.setPreserveRatio(true);
 
-            System.out.println("Can't load photo of tank");
+        // ****** NOWY KOD: Dodanie logo uniwersytetu ******
+        Image uniLogo = null;
+        ImageView uniLogoView = null;
+        String logoPath = UserInfo.getPhoto(uniIndex); // Pobierz ścieżkę do normalnego logo
 
-        ImageView uniObject = new ImageView(UserInfo.getPhoto(number));
-        sbox = new StackPane();
-//        tankObject.setX(vbox.getWidth());
-//        tankObject.setY(vbox.getHeight());
-//        uniObject.setX(vbox.getWidth()/2);
-//        uniObject.setY(vbox.getHeight()/2);
-//
-        rand = new Random();
+        if (logoPath != null) {
+            try (InputStream logoIs = getClass().getResourceAsStream(logoPath)) {
+                if (logoIs == null) {
+                    System.err.println("BŁĄD: Nie znaleziono logo uniwersytetu: " + logoPath);
+                } else {
+                    uniLogo = new Image(logoIs);
+                    uniLogoView = new ImageView(uniLogo);
+                    uniLogoView.setFitWidth(25);  // Dostosuj rozmiar logo
+                    uniLogoView.setFitHeight(25); // Dostosuj rozmiar logo
+                    uniLogoView.setPreserveRatio(true);
+                    // Możesz też ustawić pozycję logo względem czołgu,
+                    // np. StackPane.setAlignment(uniLogoView, Pos.TOP_CENTER);
+                    // Jeśli chcesz je lekko przesunąć, użyj translate na samym uniLogoView
+                }
+            } catch (Exception e) {
+                System.err.println("BŁĄD podczas ładowania logo uniwersytetu: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        // *************************************************
+
         translate = new Translate();
-        translate.setX(rand.nextInt(500)+200);
-        translate.setY(rand.nextInt(300)+100);
-        rotate = new Rotate(rand.nextDouble(360));
+        rotate = new Rotate();
+
+        // Ustawienie początkowej pozycji czołgu
+        translate.setX(300 - tankObject.getFitWidth() / 2);
+        translate.setY(200 - tankObject.getFitHeight() / 2);
+
+        sbox = new StackPane(tankObject);
+        // Jeśli uniLogoView zostało utworzone, dodaj je do StackPane
+        if (uniLogoView != null) {
+            sbox.getChildren().add(uniLogoView);
+        }
+
         sbox.getTransforms().addAll(translate, rotate);
 
-        tankObject.setFitWidth(50);
-        tankObject.setFitHeight(30);
-        uniObject.setFitWidth(25);
-        uniObject.setFitHeight(25);
-
-
-        sbox.getChildren().addAll(tankObject,uniObject);
+        rand = new Random();
     }
+
     public StackPane getVObjectToDisplay() {
         return sbox;
     }
 
-    public void moveTank(double x, double y, boolean flag)
-    {
-
-        double radians = Math.toRadians(360 - rotate.getAngle());
-//        System.out.println("Kat: " + Double.toString(360-rotate.getAngle()));
-        double directionalCoefficient = Math.tan(radians);
-        double offsetParameter = translate.getY() - directionalCoefficient * translate.getX();
-//        System.out.println("Ankle: " + Double.toString(360-rotate.getAngle()) + "Cords A " + directionalCoefficient + " Cords b:" + offsetParameter);
-        boolean turnLeft;
-        double angleBetweenTankAndMouse = Math.atan2(-y+translate.getY(), x-translate.getX());
-        if (angleBetweenTankAndMouse < 0)
-        {
-            angleBetweenTankAndMouse = 2*Math.PI + angleBetweenTankAndMouse;
-        }
-        if ( angleBetweenTankAndMouse < radians && angleBetweenTankAndMouse +2*Math.PI -radians < Math.PI || angleBetweenTankAndMouse > radians && angleBetweenTankAndMouse - radians < Math.PI)
-        {
-            turnLeft = true;
-        }
-        else
-        {
-            turnLeft = false;
-        }
-        System.out.println("Ankle of tank: "+ Double.toString(360-rotate.getAngle()) + " Ankle of mouse: " + Math.toDegrees(angleBetweenTankAndMouse)+" turnLeft: " + turnLeft);
-        double VerticalStep = Math.sin(radians) * step;
-        double HorizontalStep = Math.cos(radians) * step;
-        if ( flag )
-        {
-            translate.setY(translate.getY() + VerticalStep);
-            translate.setX(translate.getX() - HorizontalStep);
-        }
-        else
-        {
-            translate.setY(translate.getY() - VerticalStep);
-            translate.setX(translate.getX() + HorizontalStep);
-        }
-        if ( flag && turnLeft || !flag && !turnLeft)
-        {
-            rotate.setAngle(((rotate.getAngle() + 1.5)+ 360)%360);
-        }
-        else
-        {
-            rotate.setAngle(((rotate.getAngle() - 1.5)+ 360)%360);
-        }
+    public Translate getTranslate() {
+        return translate;
     }
 
-    public Rotate getRotate()
-    {
+    public Rotate getRotate() {
         return rotate;
     }
-    public Translate getTranslate()
-    {
-        return translate;
+
+    public void moveTank(double mouseX, double mouseY, boolean flag) {
+        double currentX = translate.getX() + sbox.getWidth() / 2;
+        double currentY = translate.getY() + sbox.getHeight() / 2;
+
+        double deltaX = mouseX - currentX;
+        double deltaY = mouseY - currentY;
+
+        double angleBetweenTankAndMouse = Math.atan2(-deltaY, deltaX);
+
+        double currentAngleDegrees = rotate.getAngle();
+        double currentAngleRadians = Math.toRadians(360 - currentAngleDegrees);
+
+        double angleDiff = angleBetweenTankAndMouse - currentAngleRadians;
+        if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+        if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+
+        double rotationSpeed = Math.toRadians(5);
+        boolean turnLeft = angleDiff > 0;
+
+        if (Math.abs(angleDiff) > rotationSpeed) {
+            if (turnLeft) {
+                rotate.setAngle(((rotate.getAngle() + Math.toDegrees(rotationSpeed)) + 360) % 360);
+            } else {
+                rotate.setAngle(((rotate.getAngle() - Math.toDegrees(rotationSpeed)) + 360) % 360);
+            }
+        }
+
+        double angleTolerance = Math.toRadians(10);
+        if (Math.abs(angleBetweenTankAndMouse - currentAngleRadians) < angleTolerance ||
+                Math.abs(angleBetweenTankAndMouse - currentAngleRadians - 2 * Math.PI) < angleTolerance ||
+                Math.abs(angleBetweenTankAndMouse - currentAngleRadians + 2 * Math.PI) < angleTolerance) {
+            double verticalStep = Math.sin(currentAngleRadians) * step;
+            double horizontalStep = Math.cos(currentAngleRadians) * step;
+
+            if (flag) {
+                translate.setX(currentX + horizontalStep - sbox.getWidth() / 2);
+                translate.setY(currentY - verticalStep - sbox.getHeight() / 2);
+            } else {
+                translate.setX(currentX - horizontalStep - sbox.getWidth() / 2);
+                translate.setY(currentY + verticalStep - sbox.getHeight() / 2);
+            }
+        }
     }
 }
