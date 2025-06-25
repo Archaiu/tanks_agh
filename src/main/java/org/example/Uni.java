@@ -137,24 +137,19 @@ public class Uni {
             return;
         }
 
-        // ****** ZMIENIONA LINIA ******
-        // Przekaż currentlySelectedUniIndex do konstruktora Tank
         UserInfo.setTank(_number, new Tank(currentlySelectedUniIndex));
-        // *****************************
 
         if (currentlySelectedUniIndex != -1 && currentlySelectedUniIndex < uniImageViewsList.size()) {
             uniImageViewsList.get(currentlySelectedUniIndex).setImage(normalImages[currentlySelectedUniIndex]);
             currentlySelectedUniIndex = -1;
         }
 
-        // Sprawdź, czy mainPlansza nie jest nullem przed próbą dodania do niej czołgu
         if (mainPlansza != null) {
-            mainPlansza.getChildren().clear(); // Opcjonalnie: wyczyść mainPlansza, jeśli ma już inne elementy
+            mainPlansza.getChildren().clear();
             StackPane tankView = UserInfo.getTank(_number).getVObjectToDisplay();
             mainPlansza.getChildren().add(tankView);
         } else {
             System.err.println("Błąd: mainPlansza nie została wstrzyknięta w UniController. Nie można dodać czołgu.");
-            // Możesz podjąć inną akcję, np. dodać do _pane, jeśli jest to zamierzone
             _pane.getChildren().clear();
             StackPane tankView = UserInfo.getTank(_number).getVObjectToDisplay();
             _pane.getChildren().add(tankView);

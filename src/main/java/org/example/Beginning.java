@@ -8,7 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label; // Upewnij się, że ten import jest!
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -22,8 +22,8 @@ public class Beginning extends Application {
     TextField loginButtom;
     @FXML
     Button nameSetted;
-    @FXML // <-- Ta linia MUSI tu być, aby messageLabel zostało wstrzyknięte z FXML
-    Label messageLabel; // <-- Ta linia MUSI tu być, aby móc używać messageLabel
+    @FXML //
+    Label messageLabel;
 
     @Override
     public void start(Stage stagee)
@@ -32,7 +32,7 @@ public class Beginning extends Application {
         Parent root = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/beginning.fxml"));
-            fxmlLoader.setController(this); // <-- TA LINIA MUSI BYĆ ODKOMENTOWANA!!!
+            fxmlLoader.setController(this);
             root = fxmlLoader.load();
         } catch (IOException e)
         {
@@ -57,13 +57,11 @@ public class Beginning extends Application {
         try
         {
             System.out.println("DEBUG: Beginning.stage w tryToCreateUser(): " + stage);
-            // Tutaj loginButtom.getText() zadziała TYLKO jeśli fxmlLoader.setController(this); jest odkomentowane
             number = UserInfo.createUser(stage,  loginButtom.getText(), 0 ,this);
             System.out.println("Go to load uni Scene");
             UserInfo.getClasess(number).get_uni().showUni();
         } catch (IllegalArgumentException e)
         {
-            // Ten blok kodu jest teraz poprawny, bo messageLabel będzie zainicjowane
             if (messageLabel != null) {
                 messageLabel.setText(e.getMessage() + ", give valid name");
             } else {

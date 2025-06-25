@@ -1,6 +1,6 @@
 package org.example;
 
-import javafx.stage.Stage; // Import potrzebny dla obiektu Stage
+import javafx.stage.Stage;
 
 public class UserInfo {
 
@@ -15,7 +15,6 @@ public class UserInfo {
             "/universities/ur.png"
     };
 
-    // NOWA TABLICA DLA ZAZNACZONYCH ZDJĘĆ
     private static final String[] PHOTO_PATHS_SELECTED = {
             "/universities/agh_blue.png",
             "/universities/papieski_blue.png",
@@ -34,7 +33,7 @@ public class UserInfo {
     public static int createUser(Stage stage, String userName, int userIndex, Beginning beginningInstance) {
         if (userIndex >= 0 && userIndex < clasess.length) {
             if (clasess[userIndex] == null) {
-                clasess[userIndex] = new Clasess(userIndex, beginningInstance, stage); // Corrected this line as well
+                clasess[userIndex] = new Clasess(userIndex, beginningInstance, stage);
                 mainPages[userIndex] = new MainPage(userIndex);
                 System.out.println("Utworzono użytkownika o indeksie: " + userIndex + " z nazwą: " + userName);
                 return userIndex;
@@ -88,7 +87,6 @@ public class UserInfo {
         }
     }
 
-    // NOWA METODA DO POBIERANIA ŚCIEŻEK DO ZAZNACZONYCH ZDJĘĆ
     public static String getPhotoSelected(int i) {
         if (i >= 0 && i < PHOTO_PATHS_SELECTED.length) {
             return PHOTO_PATHS_SELECTED[i];

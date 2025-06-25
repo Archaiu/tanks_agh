@@ -5,13 +5,13 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
-public class Controller { // Ta klasa jest kontrolerem dla mainPage.fxml
+public class Controller {
 
     private double xCord = 0;
     private double yCord = 0;
     private boolean left;
 
-    // mainPlansza powinna być głównym AnchorPane w mainPage.fxml z fx:id="mainPlansza"
+
     @FXML
     private AnchorPane mainPlansza;
 
@@ -19,23 +19,21 @@ public class Controller { // Ta klasa jest kontrolerem dla mainPage.fxml
     private Timer timer;
     private Tank threadTank;
 
-    // WAŻNE: Publiczny konstruktor bezargumentowy jest wymagany przez FXMLLoader
+
     public Controller() {
         System.out.println("Controller: Domyślny konstruktor wywołany.");
     }
 
-    // Konstruktor, jeśli tworzysz instancję ręcznie (np. w Clasess.java)
+
     public Controller(int number) {
-        this(); // Wywołuje konstruktor bezargumentowy
+        this();
         this._number = number;
         System.out.println("Controller: Konstruktor z numerem wywołany: " + number);
     }
 
-    // Metoda initialize() jest wywoływana przez FXMLLoader po załadowaniu FXML
     @FXML
     public void initialize() {
         System.out.println("Controller: Metoda initialize() wywołana.");
-        // Tutaj możesz dodać kod inicjalizacyjny dla mainPage.fxml
     }
 
     public AnchorPane getMainPlansza() {
@@ -80,7 +78,7 @@ public class Controller { // Ta klasa jest kontrolerem dla mainPage.fxml
             System.out.println("Cords: " + tank.getTranslate().getX() + ", " + tank.getTranslate().getY() + "Ankle: " + Double.toString(360 - tank.getRotate().getAngle()));
             mainPlansza.getChildren().add(tank.getVObjectToDisplay());
         } else {
-            System.err.println("Błąd: mainPlansza nie została wstrzyknięta w Controller! Upewnij się, że główny AnchorPane w mainPage.fxml ma fx:id='mainPlansza'.");
+            System.err.println("Błąd: mainPlansza nie została wstrzyknięta w Controller");
         }
     }
 

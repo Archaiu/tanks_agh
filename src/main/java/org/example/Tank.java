@@ -16,12 +16,10 @@ public class Tank {
     Random rand;
     double step = 1;
 
-    // Zmieniony konstruktor, przyjmuje uniIndex
     public Tank(int uniIndex) {
         Image tankPhoto = null;
         ImageView tankObject;
 
-        // Ładowanie obrazka czołgu
         try (InputStream tankIs = getClass().getResourceAsStream("/tank.jpg")) {
             if (tankIs == null) {
                 System.err.println("BŁĄD: Nie znaleziono obrazka czołgu: /tank.jpg. Sprawdź ścieżkę zasobu.");
@@ -39,10 +37,9 @@ public class Tank {
         tankObject.setFitHeight(50);
         tankObject.setPreserveRatio(true);
 
-        // ****** NOWY KOD: Dodanie logo uniwersytetu ******
         Image uniLogo = null;
         ImageView uniLogoView = null;
-        String logoPath = UserInfo.getPhoto(uniIndex); // Pobierz ścieżkę do normalnego logo
+        String logoPath = UserInfo.getPhoto(uniIndex);
 
         if (logoPath != null) {
             try (InputStream logoIs = getClass().getResourceAsStream(logoPath)) {
@@ -51,29 +48,24 @@ public class Tank {
                 } else {
                     uniLogo = new Image(logoIs);
                     uniLogoView = new ImageView(uniLogo);
-                    uniLogoView.setFitWidth(25);  // Dostosuj rozmiar logo
-                    uniLogoView.setFitHeight(25); // Dostosuj rozmiar logo
+                    uniLogoView.setFitWidth(25);
+                    uniLogoView.setFitHeight(25);
                     uniLogoView.setPreserveRatio(true);
-                    // Możesz też ustawić pozycję logo względem czołgu,
-                    // np. StackPane.setAlignment(uniLogoView, Pos.TOP_CENTER);
-                    // Jeśli chcesz je lekko przesunąć, użyj translate na samym uniLogoView
+
                 }
             } catch (Exception e) {
                 System.err.println("BŁĄD podczas ładowania logo uniwersytetu: " + e.getMessage());
                 e.printStackTrace();
             }
         }
-        // *************************************************
 
         translate = new Translate();
         rotate = new Rotate();
 
-        // Ustawienie początkowej pozycji czołgu
         translate.setX(300 - tankObject.getFitWidth() / 2);
         translate.setY(200 - tankObject.getFitHeight() / 2);
 
         sbox = new StackPane(tankObject);
-        // Jeśli uniLogoView zostało utworzone, dodaj je do StackPane
         if (uniLogoView != null) {
             sbox.getChildren().add(uniLogoView);
         }
