@@ -1,0 +1,14 @@
+# Katalogi generowane przez Maven i IDE
+target/
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# Pliki generowane przez kompilator lub build system
+*.class
+
+# Logi
+*.log

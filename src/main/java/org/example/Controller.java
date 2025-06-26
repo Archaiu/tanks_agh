@@ -14,8 +14,11 @@ public class Controller {
     private double xCord = 0;
     private double yCord = 0;
     private boolean left;
+
+
     @FXML
     private AnchorPane mainPlansza;
+
     private int _number;
     private Timer timer;
     private Tank threadTank;
@@ -29,17 +32,18 @@ public class Controller {
     private Line bottomWall;
     @FXML
     private Rectangle box1, box2, box3;
+
+    public Controller(int number)
+    {
+        _number = number;
+    }
     public AnchorPane getMainPlansza()
     {
         System.out.println("AnchorPane returned!");
         return mainPlansza;
     }
-    public Controller(int number)
-    {
-        this._number = number;
-    }
-    public void addTank(Tank tank)
-    {
+
+    public void addTank(Tank tank) {
         System.out.println("Try to add Tank");
         mainPlansza.setOnMousePressed(event ->
         {
@@ -90,15 +94,12 @@ public class Controller {
         private long startTime = System.currentTimeMillis();
         int counter = 30;
 
-        public void handle(long now)
-        {
-            if ( now > startTime + 10000000 )
-            {
+        public void handle(long now) {
+            if (now > startTime + 10000000) {
                 if (counter > 0) {
                     threadTank.moveTank(xCord, yCord, left, mainPlansza);
                     startTime = now;
-                }
-                else {
+                } else {
                     stop();
                 }
             }

@@ -22,7 +22,9 @@ public class Beginning extends Application {
     TextField loginButtom;
     @FXML
     Button nameSetted;
-//    @FXML
+    @FXML //
+    Label messageLabel;
+
     @Override
     public void start(Stage stagee)
     {
@@ -42,9 +44,8 @@ public class Beginning extends Application {
 
 
         stage.setTitle("Tanks AGH");
-//        stage.setResizable(false);
-//        stage.setFullScreen(true);
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/app_style.css").toExternalForm());
         stage.setScene(scene);
 
         stage.show();
@@ -56,32 +57,33 @@ public class Beginning extends Application {
         try
         {
             System.out.println("DEBUG: Beginning.stage w tryToCreateUser(): " + stage);
-            number = UserInfo.CreateUser(stage, this, loginButtom.getText());
+            number = UserInfo.createUser(stage,  loginButtom.getText(), 0 ,this);
             System.out.println("Go to load uni Scene");
             UserInfo.getClasess(number).get_uni().showUni();
         } catch (IllegalArgumentException e)
         {
-            nameSetted.setText(e.getMessage() + ", give valid name");
+            if (messageLabel != null) {
+                messageLabel.setText(e.getMessage() + ", give valid name");
+            } else {
+                System.err.println("ERROR: messageLabel is not initialized in FXML or Controller. Check @FXML and fxmlLoader.setController(this).");
+            }
         } catch (Exception e) {
             System.out.println("Problem with saved user's data");
             e.printStackTrace();
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException ex) {}
-            stage.close();
+            if (stage != null) {
+                stage.close();
+            }
             System.exit(0);
         }
-
-
     }
-
-
-
 
     private void createFakeUser()
     {
         try {
-            UserInfo.CreateUser(null,null, "asd");
+            UserInfo.createUser(null, "asd", 0, null);
         } catch (Exception e) {
             try {
                 TimeUnit.SECONDS.sleep(5);
