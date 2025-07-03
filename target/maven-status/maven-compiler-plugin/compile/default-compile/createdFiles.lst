@@ -1,6 +1,7 @@
 org\example\Clasess.class
 org\example\MapInfo.class
 org\example\Tank$ThreeElements.class
+org\example\Bullet.class
 org\example\MainPage.class
 org\example\Controller.class
 org\example\Tank.class
@@ -9,3 +10,4 @@ org\example\UserInfo.class
 org\example\Uni.class
 org\example\Controller$Timer.class
 org\example\Beginning.class
+org\example\BulletsMapInfo.class
