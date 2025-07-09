@@ -2,6 +2,7 @@ package org.example;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
@@ -14,8 +15,11 @@ public class Controller {
     private double xCord = 0;
     private double yCord = 0;
     private boolean left;
+
+
     @FXML
     private AnchorPane mainPlansza;
+
     private int _number;
     private Timer timer;
     private Tank threadTank;
@@ -29,18 +33,22 @@ public class Controller {
     private Line bottomWall;
     @FXML
     private Rectangle box1, box2, box3;
-    public AnchorPane getMainPlansza()
-    {
-        System.out.println("AnchorPane returned!");
-        return mainPlansza;
-    }
+    private long systemTime = 0;
+    boolean unlimitedBullets = true;
+
     public Controller(int number)
     {
-        this._number = number;
+        _number = number;
     }
-    public void addTank(Tank tank)
+    public AnchorPane getMainPlansza()
     {
+//        System.out.println("AnchorPane returned!");
+        return mainPlansza;
+    }
+
+    public void addTank(Tank tank) {
         System.out.println("Try to add Tank");
+        threadTank = tank;
         mainPlansza.setOnMousePressed(event ->
         {
             if(event.isPrimaryButtonDown() && event.isSecondaryButtonDown())
@@ -55,7 +63,6 @@ public class Controller {
             else {
                 left = false;
             }
-            threadTank = tank;
             timer = new Timer();
             timer.start();
         });
@@ -80,6 +87,13 @@ public class Controller {
                 left = false;
             }
         });
+        topWall.getScene().setOnKeyPressed(event ->{
+            if (event.getCode() == KeyCode.SPACE && System.currentTimeMillis() > systemTime + (unlimitedBullets ? 1 : 650) ) {
+                systemTime = System.currentTimeMillis();
+                System.out.println("Try to shot");
+                new Bullet(threadTank, this);
+            }
+        });
         StackPane tankToDisplay = tank.getVObjectToDisplay();
         System.out.println("Cords: " + tank.getTranslate().getX() + ", " +tank.getTranslate().getY() + "Ankle: " + Double.toString(360-tank.getRotate().getAngle()));
         mainPlansza.getChildren().add(tank.getVObjectToDisplay());
@@ -90,15 +104,12 @@ public class Controller {
         private long startTime = System.currentTimeMillis();
         int counter = 30;
 
-        public void handle(long now)
-        {
-            if ( now > startTime + 10000000 )
-            {
+        public void handle(long now) {
+            if (now > startTime + 10000000) {
                 if (counter > 0) {
                     threadTank.moveTank(xCord, yCord, left, mainPlansza);
                     startTime = now;
-                }
-                else {
+                } else {
                     stop();
                 }
             }

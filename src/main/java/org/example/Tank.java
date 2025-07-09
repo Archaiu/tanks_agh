@@ -1,15 +1,20 @@
 package org.example;
 
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import javafx.util.Duration;
 
-import java.util.Map;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Random;
 
 public class Tank {
@@ -29,42 +34,59 @@ public class Tank {
     {
         MapInfo.setCords();
         Image tankPhoto = null;
-
         ImageView tankObject;
 
-
-        tankPhoto = new Image(getClass().getResourceAsStream("/tank.jpg"));
-        if (tankPhoto == null)
-        {
-            System.out.println("Error: tankPhoto is null");
-            System.exit(0);
+        try (InputStream tankIs = getClass().getResourceAsStream("/tank.jpg")) {
+            if (tankIs == null) {
+                System.err.println("BŁĄD: Nie znaleziono obrazka czołgu: /tank.jpg. Sprawdź ścieżkę zasobu.");
+                System.exit(1);
+            }
+            tankPhoto = new Image(tankIs);
+        } catch (Exception e) {
+            System.err.println("BŁĄD podczas ładowania obrazka czołgu: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
         }
+
         tankObject = new ImageView(tankPhoto);
-
-            System.out.println("Can't load photo of tank");
-
-        ImageView uniObject = new ImageView(UserInfo.getPhoto(number));
-        sbox = new StackPane();
-//        tankObject.setX(vbox.getWidth());
-//        tankObject.setY(vbox.getHeight());
-//        uniObject.setX(vbox.getWidth()/2);
-//        uniObject.setY(vbox.getHeight()/2);
-//
-        rand = new Random(System.currentTimeMillis());
-        translate = new Translate();
-//        translate.setX(rand.nextInt(537-56-60)+56+30);
-//        translate.setY(rand.nextInt(350-38+60)+38+30);
-        rotate = new Rotate(rand.nextDouble(360));
-        setCordsToSpawnTank();
-        sbox.getTransforms().addAll(translate, rotate);
-
         tankObject.setFitWidth(25);
         tankObject.setFitHeight(15);
-        uniObject.setFitWidth(15);
-        uniObject.setFitHeight(15);
+        tankObject.setPreserveRatio(true);
+
+        Image uniLogo = null;
+        ImageView uniLogoView = null;
+        String logoPath = UserInfo.getPhoto(number);
+
+        if (logoPath != null) {
+            try (InputStream logoIs = getClass().getResourceAsStream(logoPath)) {
+                if (logoIs == null) {
+                    System.err.println("BŁĄD: Nie znaleziono logo uniwersytetu: " + logoPath);
+                } else {
+                    uniLogo = new Image(logoIs);
+                    uniLogoView = new ImageView(uniLogo);
+                    uniLogoView.setFitWidth(15);
+                    uniLogoView.setFitHeight(15);
+                    uniLogoView.setPreserveRatio(true);
+                }
+            } catch (Exception e) {
+                System.err.println("BŁĄD podczas ładowania logo uniwersytetu: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+//        ImageView uniObject = new ImageView(UserInfo.getPhoto(number));
+        sbox = new StackPane(tankObject);
+        if (uniLogoView != null) {
+            sbox.getChildren().add(uniLogoView);
+        }
+        rand = new Random(System.currentTimeMillis());
+        translate = new Translate();
+
+        rotate = new Rotate(rand.nextDouble(360));
+        sbox.getTransforms().addAll(translate, rotate);
+
+        setCordsToSpawnTank();
 
 
-        sbox.getChildren().addAll(tankObject,uniObject);
     }
     public StackPane getVObjectToDisplay() {
         return sbox;
@@ -77,7 +99,7 @@ public class Tank {
 
     public void moveTank(double x, double y, boolean flag, AnchorPane pane)
     {
-        setCircles(pane);
+//        setCircles(pane);
 
 
 
@@ -88,7 +110,7 @@ public class Tank {
         rotate.setAngle(((rotate.getAngle() + threeElements.nextAnkle())+ 360)%360);
 
 
-        moveCircles();
+//        moveCircles();
 
         if (!checkIfThereIsCollision(calculateCorners()))
         {
@@ -96,7 +118,7 @@ public class Tank {
         }
         rotate.setAngle(((rotate.getAngle() - threeElements.nextAnkle())+ 360)%360);
         translate.setY(translate.getY() - threeElements.nextVerticalStep);
-        moveCircles();
+//        moveCircles();
         if (!checkIfThereIsCollision(calculateCorners()))
         {
             return;
@@ -109,7 +131,7 @@ public class Tank {
             return;
         }
         translate.setY(translate.getY() - threeElements.nextVerticalStep);
-        moveCircles();
+//        moveCircles();
     }
 
     private void setCordsToSpawnTank()
@@ -213,16 +235,16 @@ public class Tank {
         try {
             for (var corner : corners) {
                 if (MapInfo.getMap()[(int) corner[1] - MapInfo.topBorder+ 5][(int) corner[0] + 5 - MapInfo.leftBorder]) {
-                    System.out.println("Collision!!!");
+                    //System.out.println("Collision!!!");
                     return true;
                 }
             }
-            System.out.println("No collision!!!");
+            //System.out.println("No collision!!!");
             return false;
 
         } catch (ArrayIndexOutOfBoundsException e)
         {
-            System.out.println("Out of Bounds???");
+            //System.out.println("Out of Bounds???");
             return true;
         }
     }

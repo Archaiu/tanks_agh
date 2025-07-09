@@ -1,70 +1,98 @@
 package org.example;
 
-import com.sun.tools.javac.Main;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-
 public class UserInfo {
-    private static Image[] photos= new Image[8];
-    static{
-        try {
-            photos[0] = new Image(UserInfo.class.getResourceAsStream("/universities/agh.png"));
-            System.out.println("No problem with reading .png");
-            photos[1] = new Image(UserInfo.class.getResourceAsStream("/universities/papieski.jpg"));
-            System.out.println("No problem with reading .jpg");
-            photos[2] = new Image(UserInfo.class.getResourceAsStream("/universities/PK.png"));
-            photos[3] = new Image(UserInfo.class.getResourceAsStream("/universities/uek.jpg"));
-            photos[4] = new Image(UserInfo.class.getResourceAsStream("/universities/uj.png"));
-            photos[5] = new Image(UserInfo.class.getResourceAsStream("/universities/uken.png"));
-            photos[6] = new Image(UserInfo.class.getResourceAsStream("/universities/up.jpg"));
-            photos[7] = new Image(UserInfo.class.getResourceAsStream("/universities/ur.jpg"));
-            for (var photo : photos) {
-                if (photo == null) {
-                    throw new RuntimeException("Can't load photos");
-                }
+
+    private static final String[] PHOTO_PATHS = {
+            "/universities/agh.png",
+            "/universities/papieski.png",
+            "/universities/PK.png",
+            "/universities/uek.png",
+            "/universities/ujj.png",
+            "/universities/ukenik.png",
+            "/universities/up.png",
+            "/universities/ur.png"
+    };
+
+    private static final String[] PHOTO_PATHS_SELECTED = {
+            "/universities/agh_blue.png",
+            "/universities/papieski_blue.png",
+            "/universities/PK_blue.png",
+            "/universities/uek_blue.png",
+            "/universities/ujj_blue.png",
+            "/universities/ukenik_blue.png",
+            "/universities/up_blue.png",
+            "/universities/ur_blue.png"
+    };
+
+    private static Clasess[] clasess = new Clasess[8];
+    private static Tank[] tanks = new Tank[8];
+    private static MainPage[] mainPages = new MainPage[8];
+
+    public static int createUser(Stage stage, String userName, int userIndex, Beginning beginningInstance) {
+        if (userIndex >= 0 && userIndex < clasess.length) {
+            if (clasess[userIndex] == null) {
+                clasess[userIndex] = new Clasess(userIndex, beginningInstance, stage);
+                mainPages[userIndex] = new MainPage(userIndex);
+                System.out.println("Utworzono użytkownika o indeksie: " + userIndex + " z nazwą: " + userName);
+                return userIndex;
+            } else {
+                System.out.println("Użytkownik o indeksie " + userIndex + " już istnieje.");
+                throw new IllegalArgumentException("Użytkownik o tej nazwie już istnieje!");
             }
-        }
-        catch (RuntimeException e) {
-            System.out.println(e);
-            System.exit(-1);
+        } else {
+            throw new IndexOutOfBoundsException("Indeks użytkownika poza zakresem: " + userIndex);
         }
     }
-    private static UserInfo [] _users = new UserInfo [8];
-    private static int _length = 0;
 
-    private String _name;
-    private String _photo;
-    private Tank _tank;
-    private Clasess _clasess;
+    public static Clasess getClasess(int number) {
+        if (number >= 0 && number < clasess.length) {
+            return clasess[number];
+        }
+        System.err.println("Błąd: Indeks klasy poza zakresem w UserInfo.getClasess(" + number + ")");
+        return null;
+    }
 
-    public void setName(String newName) { _name=newName; }
-    public void setPhoto(String newPhoto) { _photo=newPhoto; }
+    public static void setTank(int number, Tank tank) {
+        if (number >= 0 && number < tanks.length) {
+            tanks[number] = tank;
+        } else {
+            System.err.println("Błąd: Indeks czołgu poza zakresem w UserInfo.setTank(" + number + ")");
+        }
+    }
 
-    public static Image getPhoto(int i){return photos[i];}
-    public static Tank getTank(int number) { return _users[number]._tank; }
-    public static Clasess getClasess(int number) { return _users[number]._clasess; }
+    public static Tank getTank(int number) {
+        if (number >= 0 && number < tanks.length) {
+            return tanks[number];
+        }
+        System.err.println("Błąd: Indeks czołgu poza zakresem w UserInfo.getTank(" + number + ")");
+        return null;
+    }
 
-    public static void setTank(int nunber, Tank tank) { _users[nunber]._tank=tank; }
+    public static MainPage getClasess_mainPage(int number) {
+        if (number >= 0 && number < mainPages.length) {
+            return mainPages[number];
+        }
+        System.err.println("Błąd: Indeks strony głównej poza zakresem w UserInfo.getClasess_mainPage(" + number + ")");
+        return null;
+    }
 
-    public static int CreateUser(Stage stage, Beginning beginning, String name) throws Exception
-    {
-        System.out.println("Try to create user");
-        if ( _length == 8 )
-            throw new Exception("Can't create new user");
-        if (name.isEmpty() || name.length() > 8)
-            throw new IllegalArgumentException("Name need to be between 1 and 8 characters");
-        for (int i = 0; i<_length; i++)
-            if (_users[i]._name.equals(name))
-                throw new Exception("Name already exists");
-        System.out.println("Everything seems correct");
-        _users[_length] = new UserInfo();
-        _users[_length].setName(name);
-        _users[_length]._clasess = new Clasess(_length, beginning, stage);
-        _length++;
-        return _length-1;
+    public static String getPhoto(int i) {
+        if (i >= 0 && i < PHOTO_PATHS.length) {
+            return PHOTO_PATHS[i];
+        } else {
+            System.err.println("Błąd: Indeks zdjęcia poza zakresem w UserInfo.getPhoto(" + i + ")");
+            return null;
+        }
+    }
+
+    public static String getPhotoSelected(int i) {
+        if (i >= 0 && i < PHOTO_PATHS_SELECTED.length) {
+            return PHOTO_PATHS_SELECTED[i];
+        } else {
+            System.err.println("Błąd: Indeks wybranego zdjęcia poza zakresem w UserInfo.getPhotoSelected(" + i + ")");
+            return null;
+        }
     }
 }
