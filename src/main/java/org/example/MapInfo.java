@@ -3,6 +3,7 @@ package org.example;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
@@ -18,7 +19,6 @@ public class MapInfo {
     public static int topBorder;
     public static boolean[][] map;
     public static BulletsMapInfo mapBullets;
-
     public static void setCords()
     {
         System.out.println("Try to inicjalize the Map");
@@ -110,7 +110,18 @@ public class MapInfo {
             horisontalLines.add(new double[]{element.getLayoutY(), element.getLayoutX(), element.getWidth() + element.getLayoutX()});
             horisontalLines.add(new double[]{element.getLayoutY()+ element.getHeight(), element.getLayoutX(), element.getWidth() + element.getLayoutX()});
         }
-        mapBullets = new BulletsMapInfo(verticalLines, horisontalLines, new ArrayList<double[]>(), new ArrayList<double[]>());
+        ArrayList<double[]> horisontalBorders = new ArrayList<>();
+        ArrayList<double[]> verticalBorders = new ArrayList<>();
+        Line line = controller.getLine("left");
+        verticalBorders.add(new double[]{line.getStartX(), line.getStartY(), line.getEndY()});
+        line = controller.getLine("right");
+        verticalBorders.add(new double[]{line.getStartX(), line.getStartY(), line.getEndY()});
+        line = controller.getLine("top");
+        horisontalBorders.add(new double[]{line.getStartY(), line.getStartX(), line.getEndX()});
+        line = controller.getLine("bottom");
+        horisontalBorders.add(new double[]{line.getStartY(), line.getStartX(), line.getEndX()});
+        mapBullets = new BulletsMapInfo(verticalLines, horisontalLines,  verticalBorders,horisontalBorders);
+
     }
     public static boolean[][] getMap() { return map; }
     public static int leftBias() { return leftBorder; }

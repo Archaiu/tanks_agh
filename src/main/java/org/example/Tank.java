@@ -235,16 +235,16 @@ public class Tank {
         try {
             for (var corner : corners) {
                 if (MapInfo.getMap()[(int) corner[1] - MapInfo.topBorder+ 5][(int) corner[0] + 5 - MapInfo.leftBorder]) {
-                    System.out.println("Collision!!!");
+                    //System.out.println("Collision!!!");
                     return true;
                 }
             }
-            System.out.println("No collision!!!");
+            //System.out.println("No collision!!!");
             return false;
 
         } catch (ArrayIndexOutOfBoundsException e)
         {
-            System.out.println("Out of Bounds???");
+            //System.out.println("Out of Bounds???");
             return true;
         }
     }

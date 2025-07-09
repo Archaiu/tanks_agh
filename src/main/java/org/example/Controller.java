@@ -2,6 +2,7 @@ package org.example;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
@@ -32,6 +33,8 @@ public class Controller {
     private Line bottomWall;
     @FXML
     private Rectangle box1, box2, box3;
+    private long systemTime = 0;
+    boolean unlimitedBullets = true;
 
     public Controller(int number)
     {
@@ -39,12 +42,13 @@ public class Controller {
     }
     public AnchorPane getMainPlansza()
     {
-        System.out.println("AnchorPane returned!");
+//        System.out.println("AnchorPane returned!");
         return mainPlansza;
     }
 
     public void addTank(Tank tank) {
         System.out.println("Try to add Tank");
+        threadTank = tank;
         mainPlansza.setOnMousePressed(event ->
         {
             if(event.isPrimaryButtonDown() && event.isSecondaryButtonDown())
@@ -59,7 +63,6 @@ public class Controller {
             else {
                 left = false;
             }
-            threadTank = tank;
             timer = new Timer();
             timer.start();
         });
@@ -82,6 +85,13 @@ public class Controller {
             else if ( !event.isPrimaryButtonDown() && event.isSecondaryButtonDown())
             {
                 left = false;
+            }
+        });
+        topWall.getScene().setOnKeyPressed(event ->{
+            if (event.getCode() == KeyCode.SPACE && System.currentTimeMillis() > systemTime + (unlimitedBullets ? 1 : 650) ) {
+                systemTime = System.currentTimeMillis();
+                System.out.println("Try to shot");
+                new Bullet(threadTank, this);
             }
         });
         StackPane tankToDisplay = tank.getVObjectToDisplay();
