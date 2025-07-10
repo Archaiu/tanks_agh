@@ -155,13 +155,14 @@ public class Tank {
     }
     public ThreeElements calculateSteps(double x, double y, boolean flag)
     {
+        Point2D front = calculateFront();
         double radians = Math.toRadians(360 - rotate.getAngle());
 //        System.out.println("Kat: " + Double.toString(360-rotate.getAngle()));
         double directionalCoefficient = Math.tan(radians);
-        double offsetParameter = translate.getY() - directionalCoefficient * translate.getX();
+        double offsetParameter = front.getY() - directionalCoefficient * front.getX();
 //        System.out.println("Ankle: " + Double.toString(360-rotate.getAngle()) + "Cords A " + directionalCoefficient + " Cords b:" + offsetParameter);
         boolean turnLeft;
-        double angleBetweenTankAndMouse = Math.atan2(-y+translate.getY(), x-translate.getX());
+        double angleBetweenTankAndMouse = Math.atan2(-y+front.getY(), x-front.getX());
         if (angleBetweenTankAndMouse < 0)
         {
             angleBetweenTankAndMouse = 2*Math.PI + angleBetweenTankAndMouse;
@@ -183,9 +184,10 @@ public class Tank {
             horizontalStep = -horizontalStep;
         }
         double changeAnkle = ankleStep;
-        if ( Math.abs(360-Math.toDegrees(angleBetweenTankAndMouse) - (360 - rotate.getAngle()))< ankleStep )
+        if ( Math.abs(Math.toDegrees(angleBetweenTankAndMouse) - (540 - rotate.getAngle()))%360< ankleStep )
         {
-            changeAnkle = Math.abs(360-Math.toDegrees(angleBetweenTankAndMouse)-(360-rotate.getAngle()));
+            System.out.println("Try to set new angle");
+            changeAnkle = Math.abs(Math.toDegrees(angleBetweenTankAndMouse)-(540-rotate.getAngle()))%360;
         }
         changeAnkle = flag ? changeAnkle : -changeAnkle;
         if ( !(flag && turnLeft || !flag && !turnLeft)) {
@@ -253,7 +255,7 @@ public class Tank {
 
         if (pane != null && _pane == null)
         {
-            _cordsOfTank = new TestCordsOfTank[5];
+            _cordsOfTank = new TestCordsOfTank[4];
             for ( int i  = 0; i < _cordsOfTank.length; i++ )
             {
                 _cordsOfTank[i] = new TestCordsOfTank();
@@ -263,8 +265,11 @@ public class Tank {
             {
                 _pane.getChildren().add(el.circle);
             }
-            _cordsOfTank[4].circle.setRadius(2);
-            _cordsOfTank[4].circle.setFill(Color.RED);
+            _cordsOfTank[0].changeColor(Color.RED);
+            _cordsOfTank[1].changeColor(Color.GREEN);
+            _cordsOfTank[2].changeColor(Color.BROWN);
+            _cordsOfTank[3].changeColor(Color.BLUE);
+
         }
     }
     public void moveCircles()
@@ -280,9 +285,14 @@ public class Tank {
             _cordsOfTank[i].translate.setX(corners[i][0]);
             _cordsOfTank[i].translate.setY(corners[i][1]);
         }
-        _cordsOfTank[4].translate.setX(translate.getX());
-        _cordsOfTank[4].translate.setY(translate.getY());
     }
+    private Point2D calculateFront(){
+        double ankle = (360 - rotate.getAngle() + 90)%360;
+        double radians = Math.toRadians(ankle);
+        double Ystep = Math.sin(radians) * sbox.getHeight()/2.0;
+        double Xstep = -Math.cos(radians) * sbox.getHeight()/2.0;
+        return new Point2D ( translate.getX() + Xstep,translate.getY() + Ystep);
+}
 }
 
 

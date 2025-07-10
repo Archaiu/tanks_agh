@@ -34,7 +34,7 @@ public class Controller {
     @FXML
     private Rectangle box1, box2, box3;
     private long systemTime = 0;
-    boolean unlimitedBullets = true;
+    boolean unlimitedBullets = false;
 
     public Controller(int number)
     {

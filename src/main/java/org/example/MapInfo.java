@@ -123,6 +123,7 @@ public class MapInfo {
         mapBullets = new BulletsMapInfo(verticalLines, horisontalLines,  verticalBorders,horisontalBorders);
 
     }
+
     public static boolean[][] getMap() { return map; }
     public static int leftBias() { return leftBorder; }
     public static int topBias() { return topBorder; }

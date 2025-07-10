@@ -16,6 +16,7 @@ public class Bullet {
     double xVector;
     double yVector;
     int radius = 2;
+    boolean skipCollision = false;
     Bullet(Tank tank, Controller controller)
     {
         var startPoint = calculatePosition(tank);
@@ -51,8 +52,10 @@ public class Bullet {
     {
         translate.setX(translate.getX() + xVector);
         translate.setY(translate.getY() - yVector);
-        collision();
-
+        if ( !skipCollision ) {
+            collision();
+        }
+        skipCollision = false;
 
     }
     Point2D calculatePosition(Tank tank)
@@ -105,12 +108,13 @@ public class Bullet {
         double angleOfBullet = (Math.toDegrees(Math.atan2(-yVector, xVector))+360)%360;
         double deltaAngle = angleBulletAndCorner - angleOfBullet;
         System.out.println("Angle of bullet vector = " + angleOfBullet + " Angle between bullet and corner = " + angleBulletAndCorner + " deltaAngle" + deltaAngle);
-        double minAngleChange = 5.0;
-        if (Math.abs(deltaAngle) < minAngleChange) {
-            deltaAngle = Math.signum(deltaAngle) * minAngleChange;
-        }
+//        double minAngleChange = 5.0;
+//        if (Math.abs(deltaAngle) < minAngleChange) {
+//            deltaAngle = Math.signum(deltaAngle) * minAngleChange;
+//        }
         angleOfBullet += 2 * deltaAngle;
         xVector = step * Math.cos(Math.toRadians(angleOfBullet));
         yVector = -step * Math.sin(Math.toRadians(angleOfBullet));
     }
+
 }
