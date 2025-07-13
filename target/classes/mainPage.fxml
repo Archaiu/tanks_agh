@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
@@ -13,5 +14,6 @@
       <Rectangle fx:id="box1" arcHeight="5.0" arcWidth="5.0" height="137.0" layoutX="133.0" layoutY="126.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
       <Rectangle fx:id="box2" arcHeight="5.0" arcWidth="5.0" height="195.0" layoutX="271.0" layoutY="103.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
       <Rectangle fx:id="box3" arcHeight="5.0" arcWidth="5.0" height="137.0" layoutX="409.0" layoutY="126.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
+      <Label fx:id="numberOfRound" layoutX="56.0" layoutY="5.0" text="Label" />
    </children>
 </AnchorPane>
