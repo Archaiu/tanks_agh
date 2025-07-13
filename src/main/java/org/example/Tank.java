@@ -29,6 +29,8 @@ public class Tank {
     private Random rand;
     double step= 1;
     double ankleStep = 2.2;
+    static int _width = 25;
+    static int _height = 15;
     record ThreeElements(double nextVerticalStep, double nextHorisontalStep, double nextAnkle) {}
     public Tank(int number)
     {
@@ -49,8 +51,8 @@ public class Tank {
         }
 
         tankObject = new ImageView(tankPhoto);
-        tankObject.setFitWidth(25);
-        tankObject.setFitHeight(15);
+        tankObject.setFitWidth(_width);
+        tankObject.setFitHeight(_height);
         tankObject.setPreserveRatio(true);
 
         Image uniLogo = null;
@@ -84,9 +86,14 @@ public class Tank {
         rotate = new Rotate(rand.nextDouble(360));
         sbox.getTransforms().addAll(translate, rotate);
 
+
+
+
+    }
+
+    public void spawnTank()
+    {
         setCordsToSpawnTank();
-
-
     }
     public StackPane getVObjectToDisplay() {
         return sbox;
@@ -99,7 +106,7 @@ public class Tank {
 
     public void moveTank(double x, double y, boolean flag, AnchorPane pane)
     {
-//        setCircles(pane);
+        setCircles(pane);
 
 
 
@@ -110,7 +117,7 @@ public class Tank {
         rotate.setAngle(((rotate.getAngle() + threeElements.nextAnkle())+ 360)%360);
 
 
-//        moveCircles();
+        moveCircles();
 
         if (!checkIfThereIsCollision(calculateCorners()))
         {
@@ -118,20 +125,20 @@ public class Tank {
         }
         rotate.setAngle(((rotate.getAngle() - threeElements.nextAnkle())+ 360)%360);
         translate.setY(translate.getY() - threeElements.nextVerticalStep);
-//        moveCircles();
+        moveCircles();
         if (!checkIfThereIsCollision(calculateCorners()))
         {
             return;
         }
         translate.setY(translate.getY() + threeElements.nextVerticalStep);
         translate.setX(translate.getX() + threeElements.nextHorisontalStep);
-//        moveCircles();
+        moveCircles();
         if (!checkIfThereIsCollision(calculateCorners()))
         {
             return;
         }
         translate.setY(translate.getY() - threeElements.nextVerticalStep);
-//        moveCircles();
+        moveCircles();
     }
 
     private void setCordsToSpawnTank()
@@ -186,7 +193,7 @@ public class Tank {
         double changeAnkle = ankleStep;
         if ( Math.abs(Math.toDegrees(angleBetweenTankAndMouse) - (540 - rotate.getAngle()))%360< ankleStep )
         {
-            System.out.println("Try to set new angle");
+            //System.out.println("Try to set new angle");
             changeAnkle = Math.abs(Math.toDegrees(angleBetweenTankAndMouse)-(540-rotate.getAngle()))%360;
         }
         changeAnkle = flag ? changeAnkle : -changeAnkle;

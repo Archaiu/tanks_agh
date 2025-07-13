@@ -15,40 +15,58 @@ public class Bullet {
     double step = 1.5;
     double xVector;
     double yVector;
-    int radius = 2;
+    static int radius = 2;
     boolean skipCollision = false;
     Bullet(Tank tank, Controller controller)
     {
         var startPoint = calculatePosition(tank);
         bullet = new Circle( radius, Color.PURPLE);
         bullet.getTransforms().add(translate = new Translate(startPoint.getX(),startPoint.getY()));
+        if ( collision())
+        {
+            return;
+        }
         ankle = (360 - tank.getRotate().getAngle() + 180)%360;
         controller.getMainPlansza().getChildren().add(bullet);
+        UserInfo.getRound().bulletCreated(this);
         AnimationTimer timer = new AnimationTimer()
         {
             private long startTime = System.currentTimeMillis();
             int counter = 1000;
 
+
             public void handle(long now) {
                 if (System.currentTimeMillis() > startTime + 6 ) {
                     if (counter > 0) {
-                        moveBullet();
+//                        moveBullet();
+                        if (!UserInfo.getRound().bulletExists(Bullet.this))
+                        {
+                            controller.getMainPlansza().getChildren().remove(bullet);
+                            stop();
+                        }
+                        if(moveBullet())
+                        {
+                            controller.getMainPlansza().getChildren().remove(bullet);
+                            UserInfo.getRound().bulletDestroyed(Bullet.this);
+                            stop();
+                        }
                         startTime = System.currentTimeMillis();
                         counter--;
                     } else {
                         controller.getMainPlansza().getChildren().remove(bullet);
+                        UserInfo.getRound().bulletDestroyed(Bullet.this);
                         stop();
                     }
                 }
             }
         };
-        System.out.println("Shot at cords" + translate.getX() + " " + translate.getY());
+        //System.out.println("Shot at cords" + translate.getX() + " " + translate.getY());
         xVector = step * Math.cos(Math.toRadians(ankle));
         yVector = step * Math.sin(Math.toRadians(ankle));
 
         timer.start();
     }
-    void moveBullet()
+    boolean moveBullet()
     {
         translate.setX(translate.getX() + xVector);
         translate.setY(translate.getY() - yVector);
@@ -56,15 +74,27 @@ public class Bullet {
             collision();
         }
         skipCollision = false;
+        if (new BulletKillTank(translate.getX(), translate.getY()).checkIfTankIsKilled())
+        {
+            return true;
+        }
+        return false;
 
     }
     Point2D calculatePosition(Tank tank)
     {
-        double ankle = (360 - tank.getRotate().getAngle() + 90)%360;
+        double ankle = (360 - tank.getRotate().getAngle() + 180)%360;
         double radians = Math.toRadians(ankle);
-        double Ystep = Math.sin(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
-        double Xstep = -Math.cos(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
-        return new Point2D ( tank.getTranslate().getX() + Xstep,tank.getTranslate().getY() + Ystep);
+        double Ystep = -Math.cos(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
+        double Xstep = -Math.sin(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
+        Point2D centreOfTank = new Point2D ( tank.getTranslate().getX() + Xstep,tank.getTranslate().getY() + Ystep);
+        double newAnkle = (ankle + 180) % 360;
+        System.out.println("Ankle: " + ankle + " newAnkle: " + newAnkle);
+        double newRadians = Math.toRadians(newAnkle);
+        double newX = -(Bullet.radius+2)* Math.cos(newRadians);
+        double newY = (Bullet.radius+2)* Math.sin(newRadians);
+        return new Point2D(centreOfTank.getX() + newX,centreOfTank.getY() + newY);
+//        return centreOfTank;
     }
     boolean collision() {
         var map = MapInfo.mapBullets;
@@ -116,5 +146,6 @@ public class Bullet {
         xVector = step * Math.cos(Math.toRadians(angleOfBullet));
         yVector = -step * Math.sin(Math.toRadians(angleOfBullet));
     }
+
 
 }

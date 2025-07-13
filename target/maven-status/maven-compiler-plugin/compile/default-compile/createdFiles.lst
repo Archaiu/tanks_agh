@@ -1,10 +1,12 @@
 org\example\Clasess.class
 org\example\MapInfo.class
+org\example\BulletKillTank.class
 org\example\Tank$ThreeElements.class
 org\example\Bullet.class
 org\example\Bullet$1.class
 org\example\MainPage.class
 org\example\Controller.class
+org\example\SingleRound.class
 org\example\Tank.class
 org\example\TestCordsOfTank.class
 org\example\UserInfo.class

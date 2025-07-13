@@ -2,8 +2,14 @@ package org.example;
 
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 public class UserInfo {
 
+    static private int numberOfPlayers = 0;
+    static private int numberOfGames = 0;
+    static private SingleRound round;
+    static private int[] results;
     private static final String[] PHOTO_PATHS = {
             "/universities/agh.png",
             "/universities/papieski.png",
@@ -30,19 +36,14 @@ public class UserInfo {
     private static Tank[] tanks = new Tank[8];
     private static MainPage[] mainPages = new MainPage[8];
 
-    public static int createUser(Stage stage, String userName, int userIndex, Beginning beginningInstance) {
-        if (userIndex >= 0 && userIndex < clasess.length) {
-            if (clasess[userIndex] == null) {
-                clasess[userIndex] = new Clasess(userIndex, beginningInstance, stage);
-                mainPages[userIndex] = new MainPage(userIndex);
-                System.out.println("Utworzono użytkownika o indeksie: " + userIndex + " z nazwą: " + userName);
-                return userIndex;
-            } else {
-                System.out.println("Użytkownik o indeksie " + userIndex + " już istnieje.");
-                throw new IllegalArgumentException("Użytkownik o tej nazwie już istnieje!");
-            }
+    public static int createUser(Stage stage, String userName, Beginning beginningInstance) {
+        if ( numberOfPlayers < clasess.length) {
+                clasess[numberOfPlayers] = new Clasess(numberOfPlayers, beginningInstance, stage);
+                mainPages[numberOfPlayers] = new MainPage(numberOfPlayers);
+                System.out.println("Utworzono użytkownika o indeksie: " + numberOfPlayers + " z nazwą: " + userName);
+                return numberOfPlayers++;
         } else {
-            throw new IndexOutOfBoundsException("Indeks użytkownika poza zakresem: " + userIndex);
+            throw new IndexOutOfBoundsException("Indeks użytkownika poza zakresem: " + numberOfPlayers);
         }
     }
 
@@ -94,5 +95,44 @@ public class UserInfo {
             System.err.println("Błąd: Indeks wybranego zdjęcia poza zakresem w UserInfo.getPhotoSelected(" + i + ")");
             return null;
         }
+    }
+
+    public static int getNumberOfGames() {return numberOfGames;}
+    public static int getNumberOfPlayers() {return numberOfPlayers;}
+    public static void gameOver(){ numberOfGames++;}
+    public static SingleRound getRound() { return round;}
+    public static void tankDestroyed(int i)
+    {
+        System.out.println("Tank number "+i+" is killed!");
+    }
+    public static void tankDestroyed(Tank tank)
+    {
+        for ( int i = 0; i < numberOfPlayers; i++)
+        {
+            if ( getTank(i) == tank)
+            {
+                tankDestroyed(i);
+                return;
+            }
+        }
+        throw new IndexOutOfBoundsException("Tank doesn't exist!");
+    }
+    public static void newRound(boolean firstRound, int i)
+    {
+        numberOfGames++;
+        if (firstRound)
+        {
+            results = new int[numberOfPlayers];
+        }
+        else
+        {
+            results[i]++;
+        }
+        round = new SingleRound();
+//        try {
+
+//        } catch (NullPointerException ignored){}
+        round.startRound();
+
     }
 }

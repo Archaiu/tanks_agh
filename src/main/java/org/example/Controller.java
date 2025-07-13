@@ -2,6 +2,7 @@ package org.example;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -33,6 +34,8 @@ public class Controller {
     private Line bottomWall;
     @FXML
     private Rectangle box1, box2, box3;
+    @FXML
+    private Label numberOfRound;
     private long systemTime = 0;
     boolean unlimitedBullets = false;
 
@@ -55,7 +58,7 @@ public class Controller {
             {
                 return;
             }
-            System.out.println("Czolg rusza");
+            //System.out.println("Czolg rusza");
             if ( event.isPrimaryButtonDown())
             {
                 left = true;
@@ -70,7 +73,7 @@ public class Controller {
         {
             if ( !event.isPrimaryButtonDown() && !event.isSecondaryButtonDown())
             {
-                System.out.println("Czolg sie zatrzymuje");
+                //System.out.println("Czolg sie zatrzymuje");
                 timer.stop();
             }
         });
@@ -90,7 +93,7 @@ public class Controller {
         topWall.getScene().setOnKeyPressed(event ->{
             if (event.getCode() == KeyCode.SPACE && System.currentTimeMillis() > systemTime + (unlimitedBullets ? 1 : 650) ) {
                 systemTime = System.currentTimeMillis();
-                System.out.println("Try to shot");
+                //System.out.println("Try to shot");
                 new Bullet(threadTank, this);
             }
         });
@@ -135,5 +138,23 @@ public class Controller {
             case 3 -> box3;
             default -> throw new BadAttributeValueExpException(number);
         };
+    }
+    public Tank getTank()
+    {
+        return threadTank;
+    }
+    public void destroyTank()
+    {
+        if ( timer != null ) {timer.stop();}
+        mainPlansza.getChildren().remove(threadTank.getVObjectToDisplay());
+        mainPlansza.setOnMousePressed(event ->{});
+        mainPlansza.setOnMouseReleased(event ->{});
+        mainPlansza.setOnMouseDragged(event ->{});
+        topWall.getScene().setOnKeyPressed(event ->{});
+        threadTank = null;
+    }
+    public void setVisualNumberOfRound(int n)
+    {
+        numberOfRound.setText("Round number: " + n);
     }
 }

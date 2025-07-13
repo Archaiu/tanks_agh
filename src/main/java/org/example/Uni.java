@@ -132,17 +132,20 @@ public class Uni {
 
     @FXML
     public void confirmUni(ActionEvent event) throws IOException {
+        System.out.println("Confirm button clicked");
         if (!_choise || currentlySelectedUniIndex == -1) {
             System.out.println("Musisz wybrać uniwersytet!");
             return;
         }
+        System.out.println("Log 1");
 
         UserInfo.setTank(_number, new Tank(currentlySelectedUniIndex));
-
+        System.out.println("Log 2");
         if (currentlySelectedUniIndex != -1 && currentlySelectedUniIndex < uniImageViewsList.size()) {
             uniImageViewsList.get(currentlySelectedUniIndex).setImage(normalImages[currentlySelectedUniIndex]);
             currentlySelectedUniIndex = -1;
         }
+
 
         if (mainPlansza != null) {
             mainPlansza.getChildren().clear();
@@ -156,6 +159,8 @@ public class Uni {
         }
 
 
-        UserInfo.getClasess(_number).get_mainPage().showMainPage();
+        //UserInfo.getClasess(_number).get_mainPage().showMainPage();
+        System.out.println("Try to confirm uni");
+        UserInfo.newRound(true, _number);
     }
 }

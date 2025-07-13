@@ -57,7 +57,7 @@ public class Beginning extends Application {
         try
         {
             System.out.println("DEBUG: Beginning.stage w tryToCreateUser(): " + stage);
-            number = UserInfo.createUser(stage,  loginButtom.getText(), 0 ,this);
+            number = UserInfo.createUser(stage,  loginButtom.getText() ,this);
             System.out.println("Go to load uni Scene");
             UserInfo.getClasess(number).get_uni().showUni();
         } catch (IllegalArgumentException e)
@@ -83,7 +83,7 @@ public class Beginning extends Application {
     private void createFakeUser()
     {
         try {
-            UserInfo.createUser(null, "asd", 0, null);
+            UserInfo.createUser(null, "asd" , null);
         } catch (Exception e) {
             try {
                 TimeUnit.SECONDS.sleep(5);
