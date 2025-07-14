@@ -16,15 +16,22 @@ public class Bullet {
     double xVector;
     double yVector;
     static int radius = 2;
-    boolean skipCollision = false;
+    private Tank parent;
+    private BulletKillTank bulletKillTank = new BulletKillTank();
     Bullet(Tank tank, Controller controller)
     {
+        parent = tank;
+        if ( parent == null)
+        {
+            System.err.println("Bullet isn't corrected created");
+        }
         var startPoint = calculatePosition(tank);
         bullet = new Circle( radius, Color.PURPLE);
         bullet.getTransforms().add(translate = new Translate(startPoint.getX(),startPoint.getY()));
         if ( collision())
         {
             return;
+            //UserInfo.getRound().tankDestroyed(tank);
         }
         ankle = (360 - tank.getRotate().getAngle() + 180)%360;
         controller.getMainPlansza().getChildren().add(bullet);
@@ -68,13 +75,15 @@ public class Bullet {
     }
     boolean moveBullet()
     {
+        if (parent != null) System.out.println("Skrrrr");
         translate.setX(translate.getX() + xVector);
         translate.setY(translate.getY() - yVector);
-        if ( !skipCollision ) {
-            collision();
+        if (collision())
+        {
+            System.out.println("Collision");
+            parent = null;
         }
-        skipCollision = false;
-        if (new BulletKillTank(translate.getX(), translate.getY()).checkIfTankIsKilled())
+        if (bulletKillTank.checkIfTankIsKilled(translate.getX(), translate.getY(), parent))
         {
             return true;
         }
@@ -91,8 +100,8 @@ public class Bullet {
         double newAnkle = (ankle + 180) % 360;
         System.out.println("Ankle: " + ankle + " newAnkle: " + newAnkle);
         double newRadians = Math.toRadians(newAnkle);
-        double newX = -(Bullet.radius+2)* Math.cos(newRadians);
-        double newY = (Bullet.radius+2)* Math.sin(newRadians);
+        double newX = -(Bullet.radius*0.5)* Math.cos(newRadians);
+        double newY = (Bullet.radius*0.5)* Math.sin(newRadians);
         return new Point2D(centreOfTank.getX() + newX,centreOfTank.getY() + newY);
 //        return centreOfTank;
     }
@@ -104,7 +113,7 @@ public class Bullet {
         for (double[] element : iterator) {
             if (radius > Math.abs(translate.getX() - element[0])) {
                 if (translate.getY() >= element[1] && translate.getY() <= element[2]) {
-        //            System.out.println("Bullet have normal vertical collision");
+                    System.out.println("Bullet have normal vertical collision");
                     xVector *= -1;
                     return true;
                 } else if (radius >= length(element[0], element[1]) || radius >= length(element[0], element[2])) {
@@ -119,7 +128,7 @@ public class Bullet {
         for (double[] element : iterator) {
             if (radius > Math.abs(translate.getY() - element[0])) {
                 if (translate.getX() >= element[1] && translate.getX() <= element[2]) {
-        //            System.out.println("Bullet have normal horisontal collision");
+                    System.out.println("Bullet have normal horisontal collision");
                     yVector *= -1;
                     return true;
                 }

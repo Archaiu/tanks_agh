@@ -8,16 +8,37 @@ import java.util.Arrays;
 public class BulletKillTank {
     private double _x;
     private double _y;
-    BulletKillTank(double x, double y)
+    private Tank _tank;
+//    BulletKillTank(double x, double y, Tank tank)
+//    {
+//        _x = x;
+//        _y = y;
+//        _tank = tank;
+////        if (tank != null)
+////        {
+////            System.out.println("Skipping centrain tank");
+////        }
+////        else
+////        {
+////            System.out.println("Don't skipping anything");
+////        }
+//    }
+    public boolean checkIfTankIsKilled(double x, double y, Tank _tank)
     {
         _x = x;
         _y = y;
-    }
-    public boolean checkIfTankIsKilled()
-    {
         for ( int i = 0; i < UserInfo.getNumberOfPlayers(); i++ )
         {
-            if ( checkThisTank(UserInfo.getClasess(i).get_controller().getTank()))
+            Tank tank = UserInfo.getClasess(i).get_controller().getTank();
+            if ( tank == _tank )
+            {
+                System.out.println( "Skip checking");
+            }
+            else if ( _tank == null)
+            {
+                System.out.println( "Don't skip checking");
+            }
+            if ( _tank != tank && checkThisTank(tank))
             {
                 UserInfo.getRound().tankDestroyed(i);
                 return true;
@@ -27,6 +48,7 @@ public class BulletKillTank {
     }
     public boolean checkThisTank(Tank tank)
     {
+        System.out.println( "Attempt to catch destruction");
         double [][]corners = tank.calculateCorners();
         return ( checkWalls(corners) || checkCorners(corners));
     }

@@ -37,7 +37,7 @@ public class Controller {
     @FXML
     private Label numberOfRound;
     private long systemTime = 0;
-    boolean unlimitedBullets = false;
+    boolean unlimitedBullets = true;
 
     public Controller(int number)
     {
@@ -54,6 +54,8 @@ public class Controller {
         threadTank = tank;
         mainPlansza.setOnMousePressed(event ->
         {
+            xCord = event.getX();
+            yCord = event.getY();
             if(event.isPrimaryButtonDown() && event.isSecondaryButtonDown())
             {
                 return;
@@ -71,6 +73,8 @@ public class Controller {
         });
         mainPlansza.setOnMouseReleased( event ->
         {
+            xCord = event.getX();
+            yCord = event.getY();
             if ( !event.isPrimaryButtonDown() && !event.isSecondaryButtonDown())
             {
                 //System.out.println("Czolg sie zatrzymuje");
