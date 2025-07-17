@@ -54,8 +54,10 @@ public class Controller {
         threadTank = tank;
         mainPlansza.setOnMousePressed(event ->
         {
-            xCord = event.getX();
+
             yCord = event.getY();
+            xCord = event.getX();
+
             if(event.isPrimaryButtonDown() && event.isSecondaryButtonDown())
             {
                 return;
