@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>org.example.mechanics</groupId>
     <artifactId>sample-javafx</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <mainClass>org.example.mechanics.Beginning</mainClass>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,9 +17,7 @@
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
     </properties>
 
-
     <dependencies>
-
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -29,8 +28,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
 
+    </dependencies>
 
     <build>
         <plugins>
@@ -39,18 +43,40 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <mainClass>org.example.Beginning</mainClass>
+                    <mainClass>${mainClass}</mainClass> <!-- Używa zmiennej -->
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>16</source>
-                    <target>16</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>server</id>
+            <properties>
+                <mainClass>org.example.server.Server</mainClass>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>old</id>
+            <properties>
+                <mainClass>org.example.mechanics.Beginning</mainClass>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>player</id>
+            <properties>
+                <mainClass>org.example.player.Host</mainClass>
+            </properties>
+        </profile>
+    </profiles>
 </project>

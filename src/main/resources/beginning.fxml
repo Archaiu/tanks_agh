@@ -14,8 +14,8 @@
 <AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(to bottom, #8A9A5B, #6F8B77, #355E3B);;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="loginButtom" layoutX="226.0" layoutY="160.0" promptText="Enter your name" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #6F8B77; -fx-border-width: 1; -fx-background-color: rgba(60, 70, 75, 0.7); -fx-text-fill: white; -fx-prompt-text-fill: #E0E0E0;" />
-      <Button fx:id="nameSettedButton" layoutX="284.0" layoutY="200.0" mnemonicParsing="false" onAction="#tryToCreateUser" style="-fx-background-color: radial-gradient(center 50% 50%, radius 80%, #90A0A5, #606C71, #2A3439); -fx-background-radius: 15; -fx-text-fill: white;" text="Ok" />
-      <Label fx:id="messageLabel" layoutX="200.0" layoutY="230.0" textFill="red" />
+      <Button fx:id="nameSettedButton" layoutX="284.0" layoutY="200.0" mnemonicParsing="false" onAction="#buttonClicked" style="-fx-background-color: radial-gradient(center 50% 50%, radius 80%, #90A0A5, #606C71, #2A3439); -fx-background-radius: 15; -fx-text-fill: white;" text="Ok" />
+      <Label fx:id="messageLabel" layoutX="200.0" layoutY="230.0" prefHeight="18.0" prefWidth="190.0" textFill="red" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="376.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@pngwing.com.png" />

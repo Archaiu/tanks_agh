@@ -53,5 +53,6 @@
         </GridPane>
         <Button layoutX="274.0" layoutY="337.0" mnemonicParsing="false" onAction="#confirmUni" style="-fx-background-radius: 15; -fx-background-color: radial-gradient(center 50% 50%, radius 80%, #90A0A5, #606C71, #2A3439); -fx-text-fill: white;" text="Confirm" />
         <AnchorPane fx:id="_pane" layoutX="398.0" layoutY="38.0" prefHeight="117.0" prefWidth="135.0" />
+      <Label fx:id="error" layoutX="238.0" layoutY="377.0" prefHeight="18.0" prefWidth="135.0" />
     </children>
 </AnchorPane>
