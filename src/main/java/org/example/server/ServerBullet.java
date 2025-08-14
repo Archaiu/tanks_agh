@@ -2,25 +2,27 @@ package org.example.server;
 
 
 import javafx.geometry.Point2D;
+import org.example.common.Debugger;
+import org.example.common.MapInfo;
 import org.example.common.POJO.MyCircle;
 import org.example.common.POJO.MyTranslate;
-import org.example.mechanics.Controller;
-import org.example.mechanics.MapInfo;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class ServerBullet {
-    private MyCircle bullet;
-    private MyTranslate translate;
+    private final MyCircle bullet;
+    private final MyTranslate translate;
     double ankle;
-    double step = 1.5;
+    double step = 1.2;
     double xVector;
     double yVector;
     static int radius = 2;
     private ServerTank parent;
     private ServerBulletKillTank bulletKillTank = new ServerBulletKillTank();
-    ServerBullet(ServerTank tank, Controller controller)
+    private final UUID uuid = UUID.randomUUID();
+    private int counter = 1000;
+    ServerBullet(ServerTank tank)
     {
         parent = tank;
         if ( parent == null)
@@ -28,10 +30,11 @@ public class ServerBullet {
             System.err.println("Bullet isn't corrected created");
         }
         var startPoint = calculatePosition(tank);
-        bullet = new MyCircle(UUID.randomUUID(),radius);
+        bullet = new MyCircle(radius);
         bullet.setTranslate(translate = new MyTranslate(startPoint.getX(),startPoint.getY()));
         if ( collision())
         {
+            Server.getInstance().getRound().tankDestroyed(parent);
             return;
             //UserInfo.getRound().tankDestroyed(tank);
         }
@@ -73,8 +76,17 @@ public class ServerBullet {
 
 //        timer.start();
     }
-    boolean moveBullet()
+
+    public void bulletAction()
     {
+        if ( counter == 0 || moveBullet()) {Server.getInstance().getRound().deleteBullet(this);}
+        counter--;
+        moveBullet();
+    }
+
+    private boolean moveBullet()
+    {
+        Debugger.getDebugger().printMessageNTimesPerSecond("bulletMove", "Function happen", 1);
 //        if (parent != null) System.out.println("Skrrrr");
         translate.setX(translate.getX() + xVector);
         translate.setY(translate.getY() - yVector);
@@ -153,5 +165,14 @@ public class ServerBullet {
         yVector = -step * Math.sin(Math.toRadians(angleOfBullet));
     }
 
+    public UUID getUuid()
+    {
+        return uuid;
+    }
+
+    public MyTranslate getCentre()
+    {
+        return translate;
+    }
 
 }

@@ -2,11 +2,11 @@ package org.example.common;
 
 import org.example.player.Gamer;
 
+import java.util.HashMap;
+
 public class Debugger
 {
-    private int time1;
-    private int time2;
-    private int time3;
+    private HashMap<String, Long> hashMap = new HashMap<>();
 
     private Debugger(){}
     private static Debugger instance = new Debugger();
@@ -20,22 +20,23 @@ public class Debugger
         }
     }
 
-    public void printMessageNotOften(String message, int period)
+
+    public void printMessageNTimesPerSecond(String code, String message, double n)
     {
-        if ( time1 == 0 ) System.out.println(message);
-        time1++;
-        if (time1 == period) time1 = 0;
-    }
-    public void printMessageNotOften2(String message, int period)
-    {
-        if ( time2 == 0 ) System.out.println(message);
-        time2++;
-        if (time2 == period) time2 = 0;
-    }
-    public void printMessageNotOften3(String message, int period)
-    {
-        if ( time3 == 0 ) System.out.println(message);
-        time3++;
-        if (time3 == period) time3 = 0;
+        if (hashMap.containsKey(code))
+        {
+            long currentTime = System.currentTimeMillis();
+            double period = 1000 / n;
+            if (currentTime > hashMap.get(code) + period)
+            {
+                System.out.println(message);
+                hashMap.put(code, currentTime);
+            }
+        }
+        else
+        {
+            System.out.println(message);
+            hashMap.put(code, System.currentTimeMillis());
+        }
     }
 }

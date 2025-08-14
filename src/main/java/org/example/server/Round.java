@@ -6,11 +6,16 @@ import org.example.common.Debugger;
 import org.example.common.JSONObjects.CordsOfTanks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Round
 {
+
+    private long tankTime;
+    private long bulletTime;
+
     private static int numberOfRounds;
-    private ArrayList<ServerBullet> bullets;
     private Thread engine;
     private volatile boolean stopEngine;
     Round()
@@ -23,7 +28,40 @@ public class Round
         Server.getInstance().writeToAll(new CordsOfTanks());
     }
 
-    public void TankDestroyed(int i)
+    private HashMap<UUID,ServerBullet> bullets = new HashMap<>();
+    private ArrayList<UUID> bulletsToDelete =  new ArrayList<>();
+
+    public ArrayList<UUID> popBulletsToDelete()
+    {
+        synchronized (this)
+        {
+            var output = bulletsToDelete;
+            bulletsToDelete = new ArrayList<>();
+            return output;
+        }
+    }
+
+    public HashMap<UUID,ServerBullet> getBullets()
+    {
+        return bullets;
+    }
+
+    public void addBullet(ServerBullet bullet)
+    {
+        bullets.put(bullet.getUuid(),bullet);
+    }
+
+
+    public void deleteBullet(ServerBullet bullet)
+    {
+        synchronized(this)
+        {
+            bulletsToDelete.add(bullet.getUuid());
+            bullets.remove(bullet.getUuid());
+        }
+    }
+
+    public void tankDestroyed(ServerTank tank)
     {
 
     }
@@ -34,23 +72,30 @@ public class Round
 
     public void startEngine()
     {
-        try
+        while (true)
         {
-            while (true)
+            if (stopEngine) return;
+            if ( System.currentTimeMillis() - tankTime > 10 )
             {
-                if (stopEngine) return;
                 for (var player : Server.getInstance().getPlayers_())
                 {
                     player.tank.tankAction();
                 }
+                for ( var bullet : new ArrayList<ServerBullet> (bullets.values()) )
+                {
+                    bullet.bulletAction();
+                }
                 tankCords = gson.toJson(new CordsOfTanks());
+                tankTime = System.currentTimeMillis();
+            }
+
 //                Server.getInstance().writeToAll(cords);
         //                    Debugger.getDebugger().printMessageNotOften3((new CordsOfTanks()).toString(),300);
         //                    System.out.println("X");
-                Thread.sleep(8);
             }
-        }catch(InterruptedException ignored){System.exit(1);}
     }
+
+
 
     public String getTankCords()
     {
@@ -61,4 +106,6 @@ public class Round
     {
 
     }
+
+
 }

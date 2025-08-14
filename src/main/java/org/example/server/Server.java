@@ -17,6 +17,7 @@ public class Server {
         return "$$%%xxxxxxxxxxxxxx%%$$";
     }
 
+
     public final Object monitor = new Object();
     private static Server _server;
     private Lobby _lobby = Lobby.getInstance();
@@ -33,6 +34,8 @@ public class Server {
 
     public volatile boolean writeAllTheTime = false;
     public volatile String state = "lobby";
+    public final int minimumNumberOfClients = 1;
+
 
     public static Server getInstance()
     {
@@ -105,6 +108,7 @@ public class Server {
 
         round = new Round();
         round.startEngine();
+        startGame();
     }
 
 //    public void initializeMap()

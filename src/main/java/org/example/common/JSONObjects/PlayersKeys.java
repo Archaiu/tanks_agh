@@ -13,6 +13,7 @@ public class PlayersKeys extends SerialObject
         type = "PlayersKeys";
         Controller controller = Gamer.get_gamer()._windows._mainPage.getController();
         spaceIsPressed = controller.spaceIsPressed;
+        if (spaceIsPressed) controller.spaceIsPressed = false;
         rightKey = controller.rightKey;
         leftKey = controller.leftKey;
         mouseX = controller.mouseX;

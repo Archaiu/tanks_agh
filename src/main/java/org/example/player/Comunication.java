@@ -1,6 +1,7 @@
 package org.example.player;
 
 import com.google.gson.Gson;
+import org.example.common.Debugger;
 import org.example.common.JSONObjects.CordsOfTanks;
 import org.example.common.JSONObjects.InfoAboutUsers;
 import org.example.common.JSONObjects.PlayersKeys;
@@ -54,7 +55,6 @@ public class Comunication
                                 String input = newInput.toString().trim();
                                 if (input.equals("PING"))
                                 {
-                                    System.out.print("P");
                                     continue;
                                 }
 
@@ -203,7 +203,6 @@ public class Comunication
     }
     public void doSomethingWithInput(String input)
     {
-        System.out.println(input);
         if ( input.charAt(0) == '{') doSomethingWithInputWhichIsObject(input);
         else doSomethingWithInputWhichIsString(input);
     }
@@ -238,12 +237,12 @@ public class Comunication
             case "CordsOfTanks" ->
             {
                 CordsOfTanks cordsOfTanks = gson.fromJson(input, CordsOfTanks.class);
-                System.out.println(cordsOfTanks.toString());
+                Debugger.getDebugger().printMessageNTimesPerSecond("cordsOfTanks",input,0.5);
                 javafx.application.Platform.runLater(() ->
                 {
                     synchronized (Gamer.get_gamer().blocade)
                     {
-                        Engine.getEngine().updateCordsOfTank(cordsOfTanks);
+                        Engine.getEngine().updateObjectsOnMap(cordsOfTanks);
                     }
                 });
             }

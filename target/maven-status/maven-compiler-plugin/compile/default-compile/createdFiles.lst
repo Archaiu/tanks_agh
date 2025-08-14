@@ -3,6 +3,7 @@ org\example\server\Lobby.class
 org\example\player\Controller.class
 org\example\server\ServerBulletKillTank.class
 org\example\common\JSONObjects\PlayersKeys.class
+org\example\player\Bullet.class
 org\example\player\Comunication.class
 org\example\player\Engine$1.class
 org\example\mechanics\Tank$ThreeElements.class
@@ -55,7 +56,6 @@ org\example\server\Player$Keys.class
 org\example\server\ServerTank.class
 org\example\player\Windows.class
 org\example\mechanics\Bullet.class
-org\example\common\Debugger.class
 org\example\player\Uni.class
 org\example\server\ServerBullet.class
 org\example\common\JSONObjects\InfoAboutUsers.class

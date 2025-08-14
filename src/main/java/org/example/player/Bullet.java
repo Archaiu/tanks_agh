@@ -1,80 +1,82 @@
-//package org.example.player;
-//
-//
-//import javafx.geometry.Point2D;
-//
-//import javafx.scene.shape.Circle;
-//import javafx.scene.transform.Translate;
-//
-//
-//
-//import java.util.ArrayList;
-//
-//public class Bullet {
-//    private Circle bullet;
-//    private Translate translate;
-//    double ankle;
-//    double step = 1.5;
-//    double xVector;
-//    double yVector;
-//    static int radius = 2;
-//    private Tank parent;
+package org.example.player;
+
+
+import javafx.geometry.Point2D;
+
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.transform.Translate;
+
+
+
+import java.util.ArrayList;
+
+public class Bullet {
+    private Circle bullet;
+    private Translate translate =  new Translate();
+    private double ankle;
+    private double step = 1.5;
+    private double xVector;
+    private double yVector;
+    private static final int radius = 2;
+    private Tank parent;
 //    private BulletKillTank bulletKillTank = new BulletKillTank();
-//    Bullet(Tank tank, Controller controller)
-////    {
-////        parent = tank;
-////        if ( parent == null)
-////        {
-////            System.err.println("Bullet isn't corrected created");
-////        }
-////        var startPoint = calculatePosition(tank);
-////        bullet = new Circle( radius, Color.PURPLE);
-////        bullet.getTransforms().add(translate = new Translate(startPoint.getX(),startPoint.getY()));
-////        if ( collision())
-////        {
-////            return;
-////            //UserInfo.getRound().tankDestroyed(tank);
-////        }
-////        ankle = (360 - tank.getRotate().getAngle() + 180)%360;
-////        controller.getMainPlansza().getChildren().add(bullet);
-////        UserInfo.getRound().bulletCreated(this);
-////        AnimationTimer timer = new AnimationTimer()
-////        {
-////            private long startTime = System.currentTimeMillis();
-////            int counter = 1000;
-////
-////
-////            public void handle(long now) {
-////                if (System.currentTimeMillis() > startTime + 6 ) {
-////                    if (counter > 0) {
-////                        moveBullet();
-////                        if (!UserInfo.getRound().bulletExists(Bullet.this))
-////                        {
-////                            controller.getMainPlansza().getChildren().remove(bullet);
-////                            stop();
-////                        }
-////                        if(moveBullet())
-////                        {
-////                            controller.getMainPlansza().getChildren().remove(bullet);
-////                            UserInfo.getRound().bulletDestroyed(Bullet.this);
-////                            stop();
-////                        }
-////                        startTime = System.currentTimeMillis();
-////                        counter--;
-////                    } else {
-////                        controller.getMainPlansza().getChildren().remove(bullet);
-////                        UserInfo.getRound().bulletDestroyed(Bullet.this);
-////                        stop();
-////                    }
-////                }
-////            }
-////        };
-////        System.out.println("Shot at cords" + translate.getX() + " " + translate.getY());
-////        xVector = step * Math.cos(Math.toRadians(ankle));
-////        yVector = step * Math.sin(Math.toRadians(ankle));
-////
-////        timer.start();
-//    }
+    Bullet()
+    {
+//        parent = tank;
+//        if ( parent == null)
+//        {
+//            System.err.println("Bullet isn't corrected created");
+//        }
+//        var startPoint = calculatePosition(tank);
+        bullet = new Circle( radius, Color.PURPLE);
+        bullet.getTransforms().add( translate );
+//        bullet.getTransforms().add(translate = new Translate(startPoint.getX(),startPoint.getY()));
+//        if ( collision())
+//        {
+//            return;
+//            //UserInfo.getRound().tankDestroyed(tank);
+//        }
+//        ankle = (360 - tank.getRotate().getAngle() + 180)%360;
+//        controller.getMainPlansza().getChildren().add(bullet);
+//        UserInfo.getRound().bulletCreated(this);
+//        AnimationTimer timer = new AnimationTimer()
+//        {
+//            private long startTime = System.currentTimeMillis();
+//            int counter = 1000;
+//
+//
+//            public void handle(long now) {
+//                if (System.currentTimeMillis() > startTime + 6 ) {
+//                    if (counter > 0) {
+//                        moveBullet();
+//                        if (!UserInfo.getRound().bulletExists(Bullet.this))
+//                        {
+//                            controller.getMainPlansza().getChildren().remove(bullet);
+//                            stop();
+//                        }
+//                        if(moveBullet())
+//                        {
+//                            controller.getMainPlansza().getChildren().remove(bullet);
+//                            UserInfo.getRound().bulletDestroyed(Bullet.this);
+//                            stop();
+//                        }
+//                        startTime = System.currentTimeMillis();
+//                        counter--;
+//                    } else {
+//                        controller.getMainPlansza().getChildren().remove(bullet);
+//                        UserInfo.getRound().bulletDestroyed(Bullet.this);
+//                        stop();
+//                    }
+//                }
+//            }
+//        };
+//        System.out.println("Shot at cords" + translate.getX() + " " + translate.getY());
+//        xVector = step * Math.cos(Math.toRadians(ankle));
+//        yVector = step * Math.sin(Math.toRadians(ankle));
+//
+//        timer.start();
+    }
 //    boolean moveBullet()
 //    {
 //        if (parent != null) System.out.println("Skrrrr");
@@ -92,21 +94,21 @@
 //        return false;
 //
 //    }
-//    Point2D calculatePosition(Tank tank)
-//    {
-//        double ankle = (360 - tank.getRotate().getAngle() + 180)%360;
-//        double radians = Math.toRadians(ankle);
-//        double Ystep = -Math.cos(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
-//        double Xstep = -Math.sin(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
-//        Point2D centreOfTank = new Point2D ( tank.getTranslate().getX() + Xstep,tank.getTranslate().getY() + Ystep);
-//        double newAnkle = (ankle + 180) % 360;
-//        System.out.println("Ankle: " + ankle + " newAnkle: " + newAnkle);
-//        double newRadians = Math.toRadians(newAnkle);
-//        double newX = -(Bullet.radius*0.5)* Math.cos(newRadians);
-//        double newY = (Bullet.radius*0.5)* Math.sin(newRadians);
-//        return new Point2D(centreOfTank.getX() + newX,centreOfTank.getY() + newY);
-////        return centreOfTank;
-//    }
+    Point2D calculatePosition(Tank tank)
+    {
+        double ankle = (360 - tank.getRotate().getAngle() + 180)%360;
+        double radians = Math.toRadians(ankle);
+        double Ystep = -Math.cos(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
+        double Xstep = -Math.sin(radians) * tank.getVObjectToDisplay().getHeight()/2.0;
+        Point2D centreOfTank = new Point2D ( tank.getTranslate().getX() + Xstep,tank.getTranslate().getY() + Ystep);
+        double newAnkle = (ankle + 180) % 360;
+        System.out.println("Ankle: " + ankle + " newAnkle: " + newAnkle);
+        double newRadians = Math.toRadians(newAnkle);
+        double newX = -(Bullet.radius*0.5)* Math.cos(newRadians);
+        double newY = (Bullet.radius*0.5)* Math.sin(newRadians);
+        return new Point2D(centreOfTank.getX() + newX,centreOfTank.getY() + newY);
+//        return centreOfTank;
+    }
 //    boolean collision() {
 //        var map = MapInfo.mapBullets;
 //        boolean itIsCorner = false;
@@ -138,25 +140,34 @@
 //        }
 //        return false;
 //    }
-//    double length(double x, double y)
-//    {
-//        return Math.sqrt(Math.pow(Math.abs(x-translate.getX()), 2) + Math.pow(Math.abs(y-translate.getY()), 2));
-//    }
-//    void bulletTouchCorner(Point2D point)
-//    {
-//        // a = (translate.getY() - point.getY()) / (translate.getX() - point.getX());
-//        double angleBulletAndCorner = (Math.toDegrees(Math.atan2(-point.getY() + translate.getY(), point.getX() - translate.getX()))+360)%360;
-//        double angleOfBullet = (Math.toDegrees(Math.atan2(-yVector, xVector))+360)%360;
-//        double deltaAngle = angleBulletAndCorner - angleOfBullet;
-//        System.out.println("Angle of bullet vector = " + angleOfBullet + " Angle between bullet and corner = " + angleBulletAndCorner + " deltaAngle" + deltaAngle);
-////        double minAngleChange = 5.0;
-////        if (Math.abs(deltaAngle) < minAngleChange) {
-////            deltaAngle = Math.signum(deltaAngle) * minAngleChange;
-////        }
-//        angleOfBullet += 2 * deltaAngle;
-//        xVector = step * Math.cos(Math.toRadians(angleOfBullet));
-//        yVector = -step * Math.sin(Math.toRadians(angleOfBullet));
-//    }
-//
-//
-//}
+    double length(double x, double y)
+    {
+        return Math.sqrt(Math.pow(Math.abs(x-translate.getX()), 2) + Math.pow(Math.abs(y-translate.getY()), 2));
+    }
+    void bulletTouchCorner(Point2D point)
+    {
+        // a = (translate.getY() - point.getY()) / (translate.getX() - point.getX());
+        double angleBulletAndCorner = (Math.toDegrees(Math.atan2(-point.getY() + translate.getY(), point.getX() - translate.getX()))+360)%360;
+        double angleOfBullet = (Math.toDegrees(Math.atan2(-yVector, xVector))+360)%360;
+        double deltaAngle = angleBulletAndCorner - angleOfBullet;
+        System.out.println("Angle of bullet vector = " + angleOfBullet + " Angle between bullet and corner = " + angleBulletAndCorner + " deltaAngle" + deltaAngle);
+//        double minAngleChange = 5.0;
+//        if (Math.abs(deltaAngle) < minAngleChange) {
+//            deltaAngle = Math.signum(deltaAngle) * minAngleChange;
+//        }
+        angleOfBullet += 2 * deltaAngle;
+        xVector = step * Math.cos(Math.toRadians(angleOfBullet));
+        yVector = -step * Math.sin(Math.toRadians(angleOfBullet));
+    }
+
+    public Circle getCircle() { return bullet;}
+
+    public void setCords(double x, double y)
+    {
+        translate.setX(x);
+        translate.setY(y);
+    }
+
+
+
+}

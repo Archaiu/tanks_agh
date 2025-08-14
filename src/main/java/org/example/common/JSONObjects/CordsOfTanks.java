@@ -4,7 +4,7 @@ import org.example.common.POJO.MyPair;
 import org.example.common.POJO.MyRotate;
 import org.example.common.POJO.MyTranslate;
 import org.example.server.Server;
-
+import org.example.server.ServerBullet;
 
 
 import java.util.ArrayList;
@@ -14,11 +14,14 @@ import java.util.UUID;
 public class CordsOfTanks extends SerialObject
 {
     public ArrayList<MyPair<MyTranslate, MyRotate>> tanks;
-    public HashMap<UUID,Double> bullets;
+    public ArrayList<MyPair<UUID, MyTranslate>> bullets;
+    public ArrayList<UUID> bulletsToRemove;
     public CordsOfTanks()
     {
         type = "CordsOfTanks";
         this.tanks = getInfo();
+        bullets = getBullets();
+        bulletsToRemove = getBulletsToRemove();
     }
 
     public ArrayList<MyPair<MyTranslate, MyRotate>> getInfo()
@@ -29,6 +32,28 @@ public class CordsOfTanks extends SerialObject
             info.add( new MyPair<MyTranslate, MyRotate>(player.tank.getTranslate(),player.tank.getRotate()));
         }
         return info;
+    }
+
+    public  ArrayList<MyPair<UUID, MyTranslate>> getBullets()
+    {
+        ArrayList<MyPair<UUID, MyTranslate>> bullets = new ArrayList<>();
+        try
+        {
+            for (var el : Server.getInstance().getRound().getBullets().values())
+            {
+                bullets.add(new MyPair<>(el.getUuid(), el.getCentre()));
+            }
+        } catch ( NullPointerException ignored){}
+        return bullets;
+    }
+
+    public ArrayList<UUID> getBulletsToRemove()
+    {
+        if (Server.getInstance().getRound() == null) return new ArrayList<>();
+        synchronized (Server.getInstance().getRound())
+        {
+            return Server.getInstance().getRound().popBulletsToDelete();
+        }
     }
 
     @Override

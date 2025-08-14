@@ -173,7 +173,7 @@ public class Communication
                         {
                             CreatingAccounts.getInstance().numbersOfPlayersWithAccount++;
                             System.out.println("Number of created users: " + CreatingAccounts.getInstance().numbersOfPlayersWithAccount);
-                            if (CreatingAccounts.getInstance().numbersOfPlayersWithAccount == 2)
+                            if (CreatingAccounts.getInstance().numbersOfPlayersWithAccount == Server.getInstance().minimumNumberOfClients)
                             {
                                 Server.getInstance().getPlayers_().getFirst().communication.writeMessage("READY");
                                 CreatingAccounts.getInstance().hostCanStartGame = true;

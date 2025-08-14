@@ -55,8 +55,6 @@ public class Controller
         mainPlansza.requestFocus();
         mainPlansza.setOnKeyPressed(event -> {
             if ( event.getCode() == KeyCode.SPACE) spaceIsPressed = true;});
-        mainPlansza.setOnKeyReleased(event -> {
-            if ( event.getCode() == KeyCode.SPACE) spaceIsPressed = false;});
         EventHandler<MouseEvent> commonEventToMouse = event ->
         {
             mainPlansza.requestFocus();

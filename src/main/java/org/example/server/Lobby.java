@@ -25,7 +25,6 @@ public class Lobby
     }
 
     private final int limitOfClients = 8;
-    private final int minimumNumberOfClients = 1;
 
     public AtomicReference<Integer> numberOfUsers = new AtomicReference<>(0);
     private volatile boolean hostCanPauseLobby = false;
@@ -110,7 +109,7 @@ public class Lobby
                                         p.communication.writeMessage("CORRECT;" + (createNewUser(p) ? "HOST" : "USER"));
                                         sendSizeOfLobby();
                                         System.out.println("New user connected!");
-                                        if (server.getPlayers_().size() >= minimumNumberOfClients) allowHostToStartGame();
+                                        if (server.getPlayers_().size() >= server.minimumNumberOfClients) allowHostToStartGame();
 
                                     } else {
                                         p.communication.writeMessage("ERROR");

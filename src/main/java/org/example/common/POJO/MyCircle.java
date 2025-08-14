@@ -3,30 +3,16 @@ package org.example.common.POJO;
 import java.util.UUID;
 
 public class MyCircle {
-    private UUID id;
-    private volatile double centerX;
-    private volatile double centerY;
     final private double radius;
     private MyTranslate translate; // Referencja do obiektu MyTranslate
     private MyRotate rotate;       // Referencja do obiektu MyRotate
 
-    public MyCircle(UUID id, double centerX, double centerY, double radius) {
-        this.id = id;
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.radius = radius;
-    }
-
-    public MyCircle(UUID id, double radius)
+    public MyCircle(double radius)
     {
-        this.id = id;
         this.radius = radius;
     }
 
     // Gettery
-    public UUID getId() { return id; }
-    public double getCenterX() { return centerX; }
-    public double getCenterY() { return centerY; }
     public double getRadius() { return radius; }
     public MyTranslate getTranslate() { return translate; }
     public MyRotate getRotate() { return rotate; }
@@ -43,9 +29,6 @@ public class MyCircle {
     @Override
     public String toString() {
         return "MyCircle{" +
-                "id='" + id + '\'' +
-                ", centerX=" + centerX +
-                ", centerY=" + centerY +
                 ", radius=" + radius +
                 ", translate=" + translate +
                 ", rotate=" + rotate +

@@ -32,14 +32,10 @@ public class ServerBulletKillTank {
             ServerTank tank = Server.getInstance().getPlayers_().get(i).tank;
             if ( tank == _tank )
             {
-                System.out.println( "Skip checking");
+                continue;
             }
-            else if ( _tank == null)
-            {
-                System.out.println( "Don't skip checking");
-            }
-            if ( _tank != tank && checkThisTank(tank))
-            {
+            if ( checkThisTank(tank)) {
+                Server.getInstance().getRound().tankDestroyed(tank);
                 return true;
             }
         }

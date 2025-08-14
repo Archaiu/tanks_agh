@@ -70,8 +70,6 @@ public class ServerTank {
         boolean leftKey = player.getKeys().leftKey();
         boolean rightKey = player.getKeys().rightKey();
         boolean spaceIsPressed = player.getKeys().spaceIsPressed();
-        Debugger.getDebugger().printMessageNotOften2("x: " + x + " y: " + y + leftKey + " rightKey: " + rightKey + " spaceIsPressed: " + spaceIsPressed,20);
-//        Debugger.getDebugger().printMessageNotOften("translate: " + translate.getX() + " " + translate.getY() + ", rotate: " + rotate.getAngle(), 20);
         if (rightKey != leftKey) moveTank(x,y,leftKey);
         if (!spaceWasPressed && spaceIsPressed) shot();
         spaceWasPressed = spaceIsPressed;
@@ -80,7 +78,7 @@ public class ServerTank {
     public void moveTank(double x, double y, boolean flag)
     {
 //        setCircles(pane);
-
+        Debugger.getDebugger().printMessageNTimesPerSecond("tank", "Tank move", 2);
 
 
         ThreeElements threeElements = calculateSteps(x, y, flag);
@@ -117,7 +115,8 @@ public class ServerTank {
 
     public void shot()
     {
-
+        ServerBullet bullet = new ServerBullet(this);
+        Server.getInstance().getRound().addBullet(bullet);
     }
 
     public void setCordsToSpawnTank()
@@ -127,7 +126,7 @@ public class ServerTank {
             translate.setX(rand.nextInt(537-56-60)+56+30);
             translate.setY(rand.nextInt(350-38+60)+38+30);
             rotate.setAngle(rand.nextInt(360));
-            if (!checkIfThereIsCollision(calculateCorners()))
+            if (!checkIfThereIsCollision(calculateCorners()) && translate.getX() > MapInfo.leftBorder + 25 && translate.getX() < MapInfo.rightBorder - 25 && translate.getY() > MapInfo.topBorder + 25 && translate.getY() < MapInfo.bottomBorder - 25)
                 break;
         }
     }
