@@ -54,6 +54,7 @@
                     <target>21</target>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
@@ -75,7 +76,7 @@
         <profile>
             <id>player</id>
             <properties>
-                <mainClass>org.example.player.Host</mainClass>
+                <mainClass>org.example.player.windows.Host</mainClass>
             </properties>
         </profile>
     </profiles>

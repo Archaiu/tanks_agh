@@ -31,50 +31,17 @@ public class ServerBullet {
         }
         var startPoint = calculatePosition(tank);
         bullet = new MyCircle(radius);
-        bullet.setTranslate(translate = new MyTranslate(startPoint.getX(),startPoint.getY()));
+        translate = new MyTranslate(startPoint.getX(),startPoint.getY());
+        bullet.setTranslate(translate);
         if ( collision())
         {
             Server.getInstance().getRound().tankDestroyed(parent);
             return;
-            //UserInfo.getRound().tankDestroyed(tank);
         }
         ankle = (360 - tank.getRotate().getAngle() + 180)%360;
-//        AnimationTimer timer = new AnimationTimer()
-//        {
-//            private long startTime = System.currentTimeMillis();
-//            int counter = 1000;
-//
-//
-//            public void handle(long now) {
-//                if (System.currentTimeMillis() > startTime + 6 ) {
-//                    if (counter > 0) {
-////                        moveBullet();
-//                        if (!UserInfo.getRound().bulletExists(ServerBullet.this))
-//                        {
-//                            controller.getMainPlansza().getChildren().remove(bullet);
-//                            stop();
-//                        }
-//                        if(moveBullet())
-//                        {
-//                            controller.getMainPlansza().getChildren().remove(bullet);
-//                            UserInfo.getRound().bulletDestroyed(ServerBullet.this);
-//                            stop();
-//                        }
-//                        startTime = System.currentTimeMillis();
-//                        counter--;
-//                    } else {
-//                        controller.getMainPlansza().getChildren().remove(bullet);
-//                        UserInfo.getRound().bulletDestroyed(ServerBullet.this);
-//                        stop();
-//                    }
-//                }
-//            }
-//        };
-        //System.out.println("Shot at cords" + translate.getX() + " " + translate.getY());
         xVector = step * Math.cos(Math.toRadians(ankle));
         yVector = step * Math.sin(Math.toRadians(ankle));
 
-//        timer.start();
     }
 
     public void bulletAction()
@@ -86,13 +53,11 @@ public class ServerBullet {
 
     private boolean moveBullet()
     {
-        Debugger.getDebugger().printMessageNTimesPerSecond("bulletMove", "Function happen", 1);
-//        if (parent != null) System.out.println("Skrrrr");
         translate.setX(translate.getX() + xVector);
         translate.setY(translate.getY() - yVector);
         if (collision())
         {
-            System.out.println("Collision");
+//            System.out.println("Collision");
             parent = null;
         }
         return bulletKillTank.checkIfTankIsKilled(translate.getX(), translate.getY(), parent);
@@ -112,6 +77,7 @@ public class ServerBullet {
         double newY = (ServerBullet.radius*0.5)* Math.sin(newRadians);
         return new Point2D(centreOfTank.getX() + newX,centreOfTank.getY() + newY);
 //        return centreOfTank;
+//        return new Point2D(tank.getTranslate().getX(),tank.getTranslate().getY() );
     }
     boolean collision()
     {
@@ -122,7 +88,7 @@ public class ServerBullet {
         for (double[] element : iterator) {
             if (radius > Math.abs(translate.getX() - element[0])) {
                 if (translate.getY() >= element[1] && translate.getY() <= element[2]) {
-                    System.out.println("Bullet have normal vertical collision");
+//                    System.out.println("Bullet have normal vertical collision");
                     xVector *= -1;
                     return true;
                 } else if (radius >= length(element[0], element[1]) || radius >= length(element[0], element[2])) {
@@ -137,7 +103,7 @@ public class ServerBullet {
         for (double[] element : iterator) {
             if (radius > Math.abs(translate.getY() - element[0])) {
                 if (translate.getX() >= element[1] && translate.getX() <= element[2]) {
-                    System.out.println("Bullet have normal horisontal collision");
+//                    System.out.println("Bullet have normal horisontal collision");
                     yVector *= -1;
                     return true;
                 }

@@ -1,23 +1,13 @@
 package org.example.server;
 
-import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import org.example.common.Debugger;
-import org.example.common.JSONObjects.PlayersKeys;
 import org.example.common.MapInfo;
+import org.example.common.POJO.MyPoint2D;
 import org.example.common.POJO.MyRotate;
 import org.example.common.POJO.MyTranslate;
 import org.example.common.POJO.MyVBox;
 import org.example.mechanics.TestCordsOfTank;
-import org.example.mechanics.UserInfo;
 
-import java.io.InputStream;
 import java.util.Random;
 
 public class ServerTank {
@@ -29,11 +19,14 @@ public class ServerTank {
     private volatile MyVBox sbox;
     private volatile MyTranslate translate;
     private volatile MyRotate rotate;
-    private Random rand;
+    private static Random rand = new Random(System.currentTimeMillis());
     double step= 1;
     double ankleStep = 2.2;
     static int _width = 25;
     static int _height = 15;
+    private static int mimimumLength;
+
+    private volatile boolean tankIsDead = false;
 
     private boolean spaceWasPressed = false;
 
@@ -43,9 +36,8 @@ public class ServerTank {
         this.player = player;
 
 
-        sbox = new MyVBox();
+        sbox = new MyVBox(_width,_height);
 
-        rand = new Random(System.currentTimeMillis());
         translate = new MyTranslate();
 
         rotate = new MyRotate(rand.nextDouble(360));
@@ -65,6 +57,7 @@ public class ServerTank {
 
     public void tankAction()
     {
+        if(tankIsDead) return;
         double x = player.getKeys().mouseX();
         double y = player.getKeys().mouseY();
         boolean leftKey = player.getKeys().leftKey();
@@ -121,12 +114,13 @@ public class ServerTank {
 
     public void setCordsToSpawnTank()
     {
+        tankIsDead = false;
         while (true)
         {
             translate.setX(rand.nextInt(537-56-60)+56+30);
             translate.setY(rand.nextInt(350-38+60)+38+30);
             rotate.setAngle(rand.nextInt(360));
-            if (!checkIfThereIsCollision(calculateCorners()) && translate.getX() > MapInfo.leftBorder + 25 && translate.getX() < MapInfo.rightBorder - 25 && translate.getY() > MapInfo.topBorder + 25 && translate.getY() < MapInfo.bottomBorder - 25)
+            if (!checkIfThereIsCollision(calculateCorners()) && translate.getX() > MapInfo.leftBorder + 25 && translate.getX() < MapInfo.rightBorder - 25 && translate.getY() > MapInfo.topBorder + 25 && translate.getY() < MapInfo.bottomBorder - 25 && checkIfTankIsInGoodLen(getNumber()))
                 break;
         }
     }
@@ -140,7 +134,7 @@ public class ServerTank {
     }
     public ThreeElements calculateSteps(double x, double y, boolean flag)
     {
-        Point2D front = calculateFront();
+        MyPoint2D front = calculateFront();
         double radians = Math.toRadians(360 - rotate.getAngle());
 //        System.out.println("Kat: " + Double.toString(360-rotate.getAngle()));
         double directionalCoefficient = Math.tan(radians);
@@ -194,11 +188,11 @@ public class ServerTank {
         double halfWidth = width / 2.0;
         double halfHeight = height / 2.0;
 
-        Point2D[] localStackPaneCorners = new Point2D[4];
-        localStackPaneCorners[0] = new Point2D(0, 0);
-        localStackPaneCorners[1] = new Point2D(width, 0);
-        localStackPaneCorners[2] = new Point2D(width, height);
-        localStackPaneCorners[3] = new Point2D(0, height);
+        MyPoint2D[] localStackPaneCorners = new MyPoint2D[4];
+        localStackPaneCorners[0] = new MyPoint2D(0, 0);
+        localStackPaneCorners[1] = new MyPoint2D(width, 0);
+        localStackPaneCorners[2] = new MyPoint2D(width, height);
+        localStackPaneCorners[3] = new MyPoint2D(0, height);
 
         double finalAngleRadians = Math.toRadians(angleDegreesJavaFX);
 
@@ -271,13 +265,60 @@ public class ServerTank {
 //            _cordsOfTank[i].translate.setY(corners[i][1]);
 //        }
 //    }
-    private Point2D calculateFront(){
+    private MyPoint2D calculateFront(){
         double ankle = (360 - rotate.getAngle() + 90)%360;
         double radians = Math.toRadians(ankle);
         double Ystep = Math.sin(radians) *_height/2.0;
         double Xstep = -Math.cos(radians) * _width/2.0;
-        return new Point2D ( translate.getX() + Xstep,translate.getY() + Ystep);
-}
+        return new MyPoint2D ( translate.getX() + Xstep,translate.getY() + Ystep);
+    }
+
+    public void killTank()
+    {
+        tankIsDead = true;
+        translate.setX(-100);
+        translate.setY(-100);
+    }
+
+    public boolean isAlive()
+    {
+        return !tankIsDead;
+    }
+
+    public int getNumber()
+    {
+        for ( int i = 0; i < Server.getInstance().getPlayers_().size(); i++ )
+        {
+            if ( Server.getInstance().getPlayers_().get(i).tank == this )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private double calculateLengthToTank(ServerTank tank)
+    {
+        double x1 = this.translate.getX();
+        double y1 = this.translate.getY();
+        double x2 = tank.translate.getX();
+        double y2 = tank.translate.getY();
+
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    public boolean checkIfTankIsInGoodLen( int i)
+    {
+        for ( int j = 0; j < i; j++ )
+        {
+            if (calculateLengthToTank(Server.getInstance().getPlayers_().get(i).tank) < mimimumLength)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
 
 

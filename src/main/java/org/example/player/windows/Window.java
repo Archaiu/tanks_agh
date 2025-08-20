@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.windows;
 
 public interface Window
 {

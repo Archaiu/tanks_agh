@@ -1,14 +1,11 @@
 package org.example.player;
 
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import org.example.player.windows.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class Gamer
@@ -23,6 +20,9 @@ public class Gamer
     public Stage stage;
     public volatile String openWindow = "ip";
     public ArrayList<Informations> players= new ArrayList<Informations>();
+
+    public volatile boolean resultsLoaded;
+    public volatile boolean readyToStartGame = false;
 
 
     private Gamer(){_windows = new Windows();}
@@ -78,7 +78,25 @@ public class Gamer
         openWindow = "game";
         _windows._mainPage = new MainPage();
         _windows._mainPage.loadWindow();
-        Engine.getEngine().startEngine();
+        Engine.getEngine().startEngine(players.size());
+    }
+
+    public void loadHostWindows()
+    {
+        openWindow = "host";
+        _windows._roundsNumber = new RoundsNumber();
+        _windows._roundsNumber.loadWindow();
+    }
+
+    public void loadResultWindow()
+    {
+        synchronized (Gamer.get_gamer().blocade) {
+            if (Gamer.get_gamer().resultsLoaded) return;
+            Gamer.get_gamer().resultsLoaded = true;
+            openWindow = "result";
+            _windows._results = new Results();
+            _windows._results.loadWindow();
+        }
     }
 
 }

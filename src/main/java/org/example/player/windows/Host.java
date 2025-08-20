@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.windows;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -10,9 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.player.Comunication;
+import org.example.player.Gamer;
 import org.example.server.Server;
 
-import javax.management.BadAttributeValueExpException;
 import java.io.IOException;
 import java.net.Socket;
 

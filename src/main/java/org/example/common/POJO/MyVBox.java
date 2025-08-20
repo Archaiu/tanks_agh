@@ -11,6 +11,12 @@ public class MyVBox {
 
     public MyVBox() {}
 
+    public MyVBox(double prefWidth, double prefHeight)
+    {
+        this.prefWidth = prefWidth;
+        this.prefHeight = prefHeight;
+    }
+
     public MyVBox(String id, double layoutX, double layoutY, double prefWidth, double prefHeight) {
         this.id = id;
         this.layoutX = layoutX;

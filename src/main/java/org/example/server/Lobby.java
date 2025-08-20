@@ -1,6 +1,5 @@
 package org.example.server;
 
-import javax.management.BadAttributeValueExpException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -52,7 +51,7 @@ public class Lobby
         Server.getInstance().getPlayers_().getFirst().communication.writeMessage("READY");
     }
 
-    public void createServerForPublic() throws IOException, BadAttributeValueExpException, InterruptedException
+    public void createServerForPublic() throws IOException, InterruptedException
     {
         AtomicReference<Boolean> problemWithPort = new AtomicReference<>(true);
         Server server = Server.getInstance();
@@ -153,5 +152,10 @@ public class Lobby
         output = pl.communication.getMessage();
         System.out.println("Command from socket: " + output);
         return output;
+    }
+
+    public void resetLobby()
+    {
+        _lobby = null;
     }
 }

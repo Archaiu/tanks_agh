@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.windows;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.player.Comunication;
+import org.example.player.Gamer;
 
 import java.io.IOException;
 
@@ -32,7 +34,15 @@ public class Waiting implements Window
             System.out.println("Can't load fxml file");
             System.exit(1);
         }
-        button.setDisable(true);
+        if ( !Gamer.get_gamer().readyToStartGame)
+        {
+            button.setDisable(true);
+        }
+        else
+        {
+            button.setDisable(false);
+            button.setVisible(true);
+        }
         Scene scene = new Scene(root);
         stage.setScene(scene);
     }

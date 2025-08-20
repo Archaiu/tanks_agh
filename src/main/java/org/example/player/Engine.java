@@ -9,16 +9,19 @@ import org.example.common.JSONObjects.CordsOfTanks;
 import org.example.common.POJO.MyPair;
 import org.example.common.POJO.MyRotate;
 import org.example.common.POJO.MyTranslate;
+import org.example.server.Server;
 import org.example.server.ServerTank;
 
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class Engine
 {
     private HashMap<UUID,Bullet> bullets =  new HashMap<>();
+    public int[] results;
 
     private Engine()
     {}
@@ -29,7 +32,7 @@ public class Engine
         return _engine;
     }
 
-    public void startEngine()
+    public void startEngine(int number)
     {
         Debugger.getDebugger().printPlayersFromPlayer();
         Gamer.get_gamer()._windows._mainPage.getController().addTanksToController();
@@ -39,6 +42,8 @@ public class Engine
                 Controller controller = Gamer.get_gamer()._windows._mainPage.getController();
             }
         };
+        results = new int[number];
+        Gamer.get_gamer()._windows._mainPage.getController().updateResults();
         timer.start();
     }
 
@@ -60,6 +65,12 @@ public class Engine
     {
         updateCordsOfTank(cordsOfTanks.tanks);
         updateBullets(cordsOfTanks.bullets);
+        if (!Arrays.equals(cordsOfTanks.results, results))
+        {
+            results = cordsOfTanks.results;
+            System.out.println(Arrays.toString(results));
+            Gamer.get_gamer()._windows._mainPage.getController().updateResults();
+        }
     }
 
     private void updateBullets(ArrayList<MyPair<UUID, MyTranslate>>  bulletsToUpdate)

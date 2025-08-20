@@ -1,17 +1,24 @@
-package org.example.player;
+package org.example.player.windows;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import org.example.player.Controller;
+import org.example.player.Gamer;
 
 import java.io.IOException;
 
 public class MainPage implements Window
 {
-    private final Controller _controller = new Controller();
+    private final Controller _controller;
     public Controller getController()
     {
         return _controller;
+    }
+
+    MainPage()
+    {
+       _controller = new Controller();
     }
 
     @Override

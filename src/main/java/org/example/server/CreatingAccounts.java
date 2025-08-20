@@ -41,5 +41,9 @@ public class CreatingAccounts
         return true;
     }
 
+    public void resetEverything()
+    {
+        instance = null;
+    }
 
 }

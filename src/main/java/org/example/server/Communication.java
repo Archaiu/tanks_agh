@@ -1,6 +1,5 @@
 package org.example.server;
 
-import org.example.common.Debugger;
 import org.example.common.JSONObjects.PlayersKeys;
 import org.example.common.JSONObjects.SerialObject;
 
@@ -10,7 +9,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.example.player.Engine;
 
 public class Communication
 {
@@ -46,7 +44,7 @@ public class Communication
 
 
                     try {
-                        Thread.sleep(20);
+                        Thread.sleep(30);
                     } catch (InterruptedException ignored) {
                     }
                 }
@@ -152,7 +150,20 @@ public class Communication
             {
 
 //                System.out.println("State of conditions:  player.uniIndex != null: "+(player.uniIndex != null) + " string.equals(\"START\"): " +string.equals("START") + " player == Server.getInstance().getPlayers_().getFirst(): " + (player == Server.getInstance().getPlayers_().getFirst()) + " CreatingAccounts.getInstance().hostCanStartGame: " + CreatingAccounts.getInstance().hostCanStartGame);
-                if (player.nick == null)
+                if (Server.getInstance().numberOfRounds == null && player == Server.getInstance().getPlayers_().getFirst())
+                {
+                    try
+                    {
+                        int n = Integer.parseInt(string);
+                        Server.getInstance().numberOfRounds = n;
+                        if (n < 1 || n > 20) throw new NumberFormatException();
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println("Host send corrupted input");
+                        System.exit(1);
+                    }
+                }
+                else if (player.nick == null)
                 {
                     writeMessage(CreatingAccounts.getInstance().checkIfNickIsFreeAndCreate(string, player._number) ? ("CORRECT;" + string) : "WRONG");
                 }
@@ -175,6 +186,7 @@ public class Communication
                             System.out.println("Number of created users: " + CreatingAccounts.getInstance().numbersOfPlayersWithAccount);
                             if (CreatingAccounts.getInstance().numbersOfPlayersWithAccount == Server.getInstance().minimumNumberOfClients)
                             {
+                                System.out.println("Allow host to stop");
                                 Server.getInstance().getPlayers_().getFirst().communication.writeMessage("READY");
                                 CreatingAccounts.getInstance().hostCanStartGame = true;
                             }

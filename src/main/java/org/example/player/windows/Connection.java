@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.windows;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.example.player.Comunication;
+import org.example.player.Gamer;
 
 import java.io.IOException;
 
@@ -36,24 +38,11 @@ public class Connection implements Window
         }
         Scene scene = new Scene(root);
         if ( !Gamer.get_gamer().host) button.setVisible(false);
-        else button.setDisable(true);
+        synchronized (Gamer.get_gamer().blocade)
+        {
+            if (!ready) button.setDisable(true);
+        }
         stage.setScene(scene);
-//        try {
-//            synchronized (Gamer.get_gamer().blocade)
-//            {
-//                if (threadNeedToWait)
-//                {
-//                    ready = true;
-//                    System.out.println("State of waiting");
-//                    Gamer.get_gamer().blocade.wait();
-//                }
-//            }
-//            Gamer.get_gamer().loadNickWindows();
-//
-//        } catch (InterruptedException e)
-//        {
-//            System.err.println("Something interupted thread");
-//        }
     }
     public void setNumbersOfPlayers(int players)
     {
@@ -61,7 +50,15 @@ public class Connection implements Window
         if ( players > 2 && Gamer.get_gamer().host) {button.setDisable(false);}
     }
 
-    public void showButton(){button.setDisable(false);}
+    public void showButton()
+    {
+        synchronized (Gamer.get_gamer().blocade)
+        {
+            ready = true;
+            button.setDisable(false);
+            button.setVisible(true);
+        }
+    }
     public void buttonClicked(ActionEvent event)
     {
         Comunication.getInstance().sendMessage("START");

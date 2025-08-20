@@ -15,13 +15,13 @@ public class CordsOfTanks extends SerialObject
 {
     public ArrayList<MyPair<MyTranslate, MyRotate>> tanks;
     public ArrayList<MyPair<UUID, MyTranslate>> bullets;
-    public ArrayList<UUID> bulletsToRemove;
+    public int[] results;
     public CordsOfTanks()
     {
         type = "CordsOfTanks";
         this.tanks = getInfo();
         bullets = getBullets();
-        bulletsToRemove = getBulletsToRemove();
+        results = Server.getInstance().getResults();
     }
 
     public ArrayList<MyPair<MyTranslate, MyRotate>> getInfo()
@@ -45,15 +45,6 @@ public class CordsOfTanks extends SerialObject
             }
         } catch ( NullPointerException ignored){}
         return bullets;
-    }
-
-    public ArrayList<UUID> getBulletsToRemove()
-    {
-        if (Server.getInstance().getRound() == null) return new ArrayList<>();
-        synchronized (Server.getInstance().getRound())
-        {
-            return Server.getInstance().getRound().popBulletsToDelete();
-        }
     }
 
     @Override

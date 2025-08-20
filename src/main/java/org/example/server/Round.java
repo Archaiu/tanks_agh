@@ -2,7 +2,6 @@ package org.example.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.example.common.Debugger;
 import org.example.common.JSONObjects.CordsOfTanks;
 
 import java.util.ArrayList;
@@ -14,32 +13,23 @@ public class Round
 
     private long tankTime;
     private long bulletTime;
+    private int numberOfAliveTanks = Server.getInstance().getPlayers_().size();
 
     private static int numberOfRounds;
     private Thread engine;
     private volatile boolean stopEngine;
     Round()
     {
+        System.out.println("New round");
         numberOfRounds++;
         for ( var player : Server.getInstance().getPlayers_())
         {
             player.tank.setCordsToSpawnTank();
         }
-        Server.getInstance().writeToAll(new CordsOfTanks());
     }
 
     private HashMap<UUID,ServerBullet> bullets = new HashMap<>();
-    private ArrayList<UUID> bulletsToDelete =  new ArrayList<>();
 
-    public ArrayList<UUID> popBulletsToDelete()
-    {
-        synchronized (this)
-        {
-            var output = bulletsToDelete;
-            bulletsToDelete = new ArrayList<>();
-            return output;
-        }
-    }
 
     public HashMap<UUID,ServerBullet> getBullets()
     {
@@ -56,14 +46,24 @@ public class Round
     {
         synchronized(this)
         {
-            bulletsToDelete.add(bullet.getUuid());
             bullets.remove(bullet.getUuid());
         }
     }
 
     public void tankDestroyed(ServerTank tank)
     {
-
+        tank.killTank();
+        numberOfAliveTanks--;
+        if ( numberOfAliveTanks < 2 )
+        {
+            System.out.println("There is only one tank at game");
+            for (int i = 0; i < Server.getInstance().getPlayers_().size(); i++) {
+                if (Server.getInstance().getPlayers_().get(i).tank.isAlive()) {
+                    Server.getInstance().updateResult(i);
+                }
+            }
+            stopEngine = true;
+        }
     }
 
     private String tankCords = new CordsOfTanks().toString();
@@ -75,7 +75,7 @@ public class Round
         while (true)
         {
             if (stopEngine) return;
-            if ( System.currentTimeMillis() - tankTime > 10 )
+            if ( System.currentTimeMillis() - tankTime > 18 )
             {
                 for (var player : Server.getInstance().getPlayers_())
                 {
@@ -102,10 +102,7 @@ public class Round
         return tankCords;
     }
 
-    public void stopEngine()
-    {
 
-    }
 
 
 }

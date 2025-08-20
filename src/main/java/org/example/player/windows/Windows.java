@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.windows;
 
 public class Windows
 {
@@ -8,4 +8,6 @@ public class Windows
     public Uni _uni;
     public Waiting _waiting;
     public MainPage _mainPage;
+    public RoundsNumber _roundsNumber;
+    public Results _results;
 }

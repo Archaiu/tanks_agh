@@ -8,21 +8,6 @@ import java.util.Comparator;
 public class ServerBulletKillTank {
     private double _x;
     private double _y;
-//    private ServerTank _tank;
-//    BulletKillTank(double x, double y, ServerTank tank)
-//    {
-//        _x = x;
-//        _y = y;
-//        _tank = tank;
-////        if (tank != null)
-////        {
-////            System.out.println("Skipping centrain tank");
-////        }
-////        else
-////        {
-////            System.out.println("Don't skipping anything");
-////        }
-//    }
     public boolean checkIfTankIsKilled(double x, double y, ServerTank _tank)
     {
         _x = x;
@@ -43,7 +28,6 @@ public class ServerBulletKillTank {
     }
     public boolean checkThisTank(ServerTank tank)
     {
-        System.out.println( "Attempt to catch destruction");
         double [][]corners = tank.calculateCorners();
         return ( checkWalls(corners) || checkCorners(corners));
     }

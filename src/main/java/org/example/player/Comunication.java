@@ -1,11 +1,7 @@
 package org.example.player;
 
 import com.google.gson.Gson;
-import org.example.common.Debugger;
-import org.example.common.JSONObjects.CordsOfTanks;
-import org.example.common.JSONObjects.InfoAboutUsers;
-import org.example.common.JSONObjects.PlayersKeys;
-import org.example.common.JSONObjects.SerialObject;
+import org.example.common.JSONObjects.*;
 import org.example.server.Server;
 
 import java.io.BufferedReader;
@@ -140,19 +136,40 @@ public class Comunication
                 if (input.equals("START"))
                 {
                     Gamer.get_gamer().openWindow = "nick";
-                    javafx.application.Platform.runLater(Gamer.get_gamer()::loadNickWindows);
+                    if(Gamer.get_gamer().host)
+                    {
+                        javafx.application.Platform.runLater(Gamer.get_gamer()::loadHostWindows);
+                    }
+                    else
+                    {
+                        javafx.application.Platform.runLater(Gamer.get_gamer()::loadNickWindows);
+                    }
                 }
-                else if(input.equals("READY")) { Gamer.get_gamer()._windows._connection.showButton();}
+                else if(input.equals("READY"))
+                {
+                    System.out.println("show button");
+                    javafx.application.Platform.runLater(() -> Gamer.get_gamer()._windows._connection.showButton());
+                }
                 else
                 {
                     javafx.application.Platform.runLater(() ->
                             Gamer.get_gamer()._windows._connection.setNumbersOfPlayers(Integer.parseInt(input)));
                 }
             }
+            case "host" ->
+            {
+                {
+                    Gamer.get_gamer().readyToStartGame = true;
+                }
+            }
             case "nick" ->
             {
 //                System.out.println("In nick state there is new input");
-                if (input.equals("WRONG"))
+                if (input.equals("READY"))
+                {
+                    Gamer.get_gamer().readyToStartGame = true;
+                }
+                else if (input.equals("WRONG"))
                 {
                     System.out.println("Nick is selected");
                     javafx.application.Platform.runLater(()->
@@ -171,8 +188,12 @@ public class Comunication
             }
             case "uni" ->
             {
+                if (input.equals("READY"))
+                {
+                    Gamer.get_gamer().readyToStartGame = true;
+                }
 //                System.out.println("In uni state there is new input");
-                if (input.equals("WRONG"))
+                else if (input.equals("WRONG"))
                 {
                     System.out.println("Uni is selected");
                     javafx.application.Platform.runLater(()->
@@ -237,7 +258,6 @@ public class Comunication
             case "CordsOfTanks" ->
             {
                 CordsOfTanks cordsOfTanks = gson.fromJson(input, CordsOfTanks.class);
-                Debugger.getDebugger().printMessageNTimesPerSecond("cordsOfTanks",input,0.5);
                 javafx.application.Platform.runLater(() ->
                 {
                     synchronized (Gamer.get_gamer().blocade)
@@ -245,6 +265,14 @@ public class Comunication
                         Engine.getEngine().updateObjectsOnMap(cordsOfTanks);
                     }
                 });
+            }
+            case "EndGame" ->
+            {
+                System.out.println("End game");
+                EndGame endGame = gson.fromJson(input, EndGame.class);
+                Engine.getEngine().results = endGame.results;
+                javafx.application.Platform.runLater(Gamer.get_gamer()::loadResultWindow);
+
             }
         }
 

@@ -2,10 +2,10 @@ package org.example.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.example.common.JSONObjects.EndGame;
 import org.example.common.JSONObjects.InfoAboutUsers;
 import org.example.common.MapInfo;
 import org.example.common.JSONObjects.SerialObject;
-import javax.management.BadAttributeValueExpException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -17,15 +17,18 @@ public class Server {
         return "$$%%xxxxxxxxxxxxxx%%$$";
     }
 
+    public Integer numberOfRounds;
+    public int number = 0;
 
     public final Object monitor = new Object();
     private static Server _server;
-    private Lobby _lobby = Lobby.getInstance();
+    private final Lobby _lobby = Lobby.getInstance();
     private ServerSocket _serverSocket;
     public ServerSocket getServerSocket() {return _serverSocket;}
     public void setServerSocket(ServerSocket serverSocket) {this._serverSocket = serverSocket;}
-    private volatile ArrayList<Player> players_ = new ArrayList<>();
+    private final ArrayList<Player> players_ = new ArrayList<>();
     public ArrayList<Player> getPlayers_() {return players_;}
+    private int[] results;
     public final int port = 5556;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -34,7 +37,7 @@ public class Server {
 
     public volatile boolean writeAllTheTime = false;
     public volatile String state = "lobby";
-    public final int minimumNumberOfClients = 1;
+    public final int minimumNumberOfClients = 2;
 
 
     public static Server getInstance()
@@ -44,7 +47,7 @@ public class Server {
         }
         return _server;
     }
-    private static void initalizeServer() throws IOException, BadAttributeValueExpException, InterruptedException
+    private static void initalizeServer() throws IOException, InterruptedException
     {
         _server = Server.getInstance();
         try{_server._lobby.createServerForPublic();}
@@ -58,6 +61,7 @@ public class Server {
     }
     public void createNickAndTank()
     {
+        results = new int[Server.getInstance().getPlayers_().size()];
         for ( int i = 0; i < players_.size(); i++ )
         {
             players_.get(i)._number=i;
@@ -70,7 +74,6 @@ public class Server {
             try {monitor.wait();}
             catch (InterruptedException ignored){}
         }
-//        initializeMap();
         startGame();
     }
 
@@ -105,16 +108,41 @@ public class Server {
 
     public void startRound()
     {
-
+        number++;
         round = new Round();
         round.startEngine();
-        startGame();
+        if (number == numberOfRounds)
+        {
+            writeToAll(new EndGame());
+            writeToAll(new EndGame());
+            writeToAll(new EndGame());
+            try
+            {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored){}
+            returnToBeginning();
+        }
+        else
+        {
+            startRound();
+        }
     }
 
-//    public void initializeMap()
-//    {
-//        System.out.println("Map initialized");
-//    }
+    public void returnToBeginning()
+    {
+        System.out.println("End game");
+        CreatingAccounts.getInstance().resetEverything();
+        Lobby.getInstance().resetLobby();
+        Player.deletePlayers();
+        _server = new Server();
+    }
+
+    public void updateResult(int i)
+    {
+        results[i]+=1;
+    }
+
+    public int[] getResults() { return results;}
 
     public void endServer()
     {

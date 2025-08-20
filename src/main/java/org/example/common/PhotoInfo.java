@@ -31,4 +31,22 @@ public class PhotoInfo
             "/universities/up_blue.png",
             "/universities/ur_blue.png"
     };
+
+    public String getPhoto(int i) {
+        if (i >= 0 && i < PHOTO_PATHS.length) {
+            return PHOTO_PATHS[i];
+        } else {
+            System.err.println("Błąd: Indeks zdjęcia poza zakresem w UserInfo.getPhoto(" + i + ")");
+            return null;
+        }
+    }
+
+    public String getPhotoSelected(int i) {
+        if (i >= 0 && i < PHOTO_PATHS_SELECTED.length) {
+            return PHOTO_PATHS_SELECTED[i];
+        } else {
+            System.err.println("Błąd: Indeks wybranego zdjęcia poza zakresem w UserInfo.getPhotoSelected(" + i + ")");
+            return null;
+        }
+    }
 }

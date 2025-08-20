@@ -8,20 +8,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import org.example.server.Server;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import javax.management.BadAttributeValueExpException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.InputStream;
-import java.net.URL;
+
 import java.util.ArrayList;
 
 public class Controller
 {
+    @FXML
+    private Label result;
     @FXML
     private AnchorPane mainPlansza;
     @FXML
@@ -98,6 +92,18 @@ public class Controller
             tanks.add(Gamer.get_gamer().players.get(i).tank);
             mainPlansza.getChildren().add(Gamer.get_gamer().players.get(i).tank.getVObjectToDisplay());
         }
+    }
+
+    public void updateResults()
+    {
+        System.out.println("Update results");
+        StringBuffer output = new StringBuffer();
+        for ( int i = 0; i < Gamer.get_gamer().players.size(); i++)
+        {
+            output.append(Gamer.get_gamer().players.get(i).name);
+            output.append(":").append(Engine.getEngine().results[i]).append("  ");
+        }
+        result.setText(output.toString());
     }
 
     public AnchorPane getPane() { return mainPlansza; }

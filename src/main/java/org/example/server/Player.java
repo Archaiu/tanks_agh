@@ -1,21 +1,12 @@
 package org.example.server;
 
-import org.example.common.Tank;
 
-import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Player {
     public Communication communication;
     public Socket _socket;
     public int _number;
-    public String[] orders;
-    public PrintWriter _out;
-    public BufferedReader _in;
-    public volatile String _input;
-    public volatile String _output = "PING";
     public volatile boolean _endProcess = false;
     public final Object blocade = new Object();
     public volatile boolean stringReceived;
@@ -48,8 +39,15 @@ public class Player {
     {
         System.out.println("End connection with socket");
         _endProcess = true;
-        if ( !Server.getInstance().state.equals("lobby") && Server.getInstance().getPlayers_().isEmpty()) Server.getInstance().endServer();
+//        if ( !Server.getInstance().state.equals("lobby") && Server.getInstance().getPlayers_().isEmpty()) Server.getInstance().endServer();
     }
 
+    public static void deletePlayers()
+    {
+        for ( var el : Server.getInstance().getPlayers_() )
+        {
+            el.endPlayer();
+        }
+    }
 
 }

@@ -1,0 +1,156 @@
+package org.example.player.windows;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import org.example.common.PhotoInfo;
+import org.example.player.Comunication;
+import org.example.player.Gamer;
+
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+public class Uni implements Window
+{
+    @FXML
+    private Label error;
+
+    @FXML
+    private AnchorPane _pane;
+
+    @FXML
+    private AnchorPane mainPlansza;
+
+    @FXML
+    private ImageView uniImageView1, uniImageView2, uniImageView3, uniImageView4, uniImageView5, uniImageView6, uniImageView7, uniImageView8;
+
+    private int _number;
+    private boolean _choise = false;
+
+    private ArrayList<ImageView> uniImageViewsList = new ArrayList<>();
+    private int currentlySelectedUniIndex = -1;
+
+    private Image[] normalImages = new Image[8];
+    private Image[] selectedImages = new Image[8];
+
+    @FXML
+    public void initialize() {
+        System.out.println("Uni: Method initialize() used.");
+
+        uniImageViewsList.add(uniImageView1);
+        uniImageViewsList.add(uniImageView2);
+        uniImageViewsList.add(uniImageView3);
+        uniImageViewsList.add(uniImageView4);
+        uniImageViewsList.add(uniImageView5);
+        uniImageViewsList.add(uniImageView6);
+        uniImageViewsList.add(uniImageView7);
+        uniImageViewsList.add(uniImageView8);
+
+        for (int i = 0; i < uniImageViewsList.size(); i++) {
+            final int index = i;
+            uniImageViewsList.get(i).setOnMouseClicked(event -> handleUniSelection(index));
+        }
+
+        loadUniImages();
+    }
+
+    public void loadWindow(){
+        System.out.println("Try to load Uni scene");
+        Parent root = null;
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/uni.fxml"));
+            fxmlLoader.setController(this);
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            System.err.println("Can't load uni.fxml: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        System.out.println("Photos to Uni loaded");
+        Scene scene = new Scene(root);
+        Gamer.get_gamer().stage.setScene(scene);
+    }
+
+    private void loadUniImages() {
+        for (int i = 0; i < 8; i++) {
+            String normalPath = PhotoInfo.getInstance().getPhoto(i);
+            String selectedPath = PhotoInfo.getInstance().getPhotoSelected(i);
+
+            if (normalPath == null || selectedPath == null) {
+                System.err.println("Wrong index " + i);
+                System.exit(1);
+            }
+
+            try (InputStream normalIs = getClass().getResourceAsStream(normalPath)) {
+                if (normalIs == null) {
+                    System.err.println("Can't find picture: " + normalPath);
+                    System.exit(1);
+                }
+                normalImages[i] = new Image(normalIs);
+            } catch (Exception e) {
+                System.err.println("Can't load picture " + normalPath + ": " + e.getMessage());
+                e.printStackTrace();
+                System.exit(1);
+            }
+
+            try (InputStream selectedIs = getClass().getResourceAsStream(selectedPath)) {
+                if (selectedIs == null) {
+                    System.err.println("Can't find picture ( blue version) " + selectedPath);
+                    System.exit(1);
+                }
+                selectedImages[i] = new Image(selectedIs);
+            } catch (Exception e) {
+                System.err.println("Cant't load picture (blue version)" + selectedPath + ": " + e.getMessage());
+                e.printStackTrace();
+                System.exit(1);
+            }
+
+            if (uniImageViewsList.get(i) != null) {
+                uniImageViewsList.get(i).setImage(normalImages[i]);
+            } else {
+                System.err.println("BŁĄD: uniImageView" + (i+1) + " hasn't been properly injected yet");
+                System.exit(1);
+            }
+        }
+    }
+
+    private void handleUniSelection(int newIndex) {
+        if (currentlySelectedUniIndex != -1 && currentlySelectedUniIndex < uniImageViewsList.size()) {
+            uniImageViewsList.get(currentlySelectedUniIndex).setImage(normalImages[currentlySelectedUniIndex]);
+        }
+
+        if (newIndex >= 0 && newIndex < uniImageViewsList.size()) {
+            uniImageViewsList.get(newIndex).setImage(selectedImages[newIndex]);
+            currentlySelectedUniIndex = newIndex;
+            _choise = true;
+        }
+    }
+
+    @FXML
+    public void confirmUni(ActionEvent event) throws IOException
+    {
+        System.out.println("Confirm button clicked");
+        if (!_choise || currentlySelectedUniIndex == -1) {
+            System.out.println("Choose uni!");
+            return;
+        }
+        System.out.println("Log 1");
+        Comunication.getInstance().sendMessage(Integer.toString(currentlySelectedUniIndex));
+    }
+
+
+    public void setError(String s)
+    {
+        error.setText(s);
+    }
+}

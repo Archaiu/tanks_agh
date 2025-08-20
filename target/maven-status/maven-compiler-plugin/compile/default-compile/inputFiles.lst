@@ -1,6 +1,7 @@
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\common\BulletsMapInfo.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\common\Debugger.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\common\JSONObjects\CordsOfTanks.java
+C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\common\JSONObjects\EndGame.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\common\JSONObjects\InfoAboutUsers.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\common\JSONObjects\PlayersKeys.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\common\JSONObjects\SerialObject.java
@@ -41,6 +42,9 @@ C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\pla
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\Nick.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\OthersInformation.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\PlayerInformation.java
+C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\PlayerScore.java
+C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\Results.java
+C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\RoundsNumber.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\Signals.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\Tank.java
 C:\Users\Artur\Desktop\own\projects\Java\tanks_agh\src\main\java\org\example\player\Uni.java
