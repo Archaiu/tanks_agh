@@ -16,7 +16,7 @@ public class MainPage implements Window
         return _controller;
     }
 
-    MainPage()
+    public MainPage()
     {
        _controller = new Controller();
     }
