@@ -1,12 +1,11 @@
 package org.example.server;
 
-import org.example.common.Debugger;
-import org.example.common.MapInfo;
+import org.example.common.others.Debugger;
+import org.example.common.others.MapInfo;
 import org.example.common.POJO.MyPoint2D;
 import org.example.common.POJO.MyRotate;
 import org.example.common.POJO.MyTranslate;
 import org.example.common.POJO.MyVBox;
-import org.example.mechanics.TestCordsOfTank;
 
 import java.util.Random;
 

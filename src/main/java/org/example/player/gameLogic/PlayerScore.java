@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.gameLogic;
 
 import javafx.beans.property.SimpleStringProperty;
 
@@ -20,4 +20,10 @@ public class PlayerScore {
     public SimpleStringProperty placeProperty() { return place; }
     public SimpleStringProperty nicknameProperty() { return nickname; }
     public SimpleStringProperty scoreProperty() { return score; }
+
+    @Override
+    public String toString()
+    {
+        return "Place: " + place + ", Nickname: " + nickname + ", Score: " + score;
+    }
 }

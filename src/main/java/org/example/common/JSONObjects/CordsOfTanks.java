@@ -4,11 +4,11 @@ import org.example.common.POJO.MyPair;
 import org.example.common.POJO.MyRotate;
 import org.example.common.POJO.MyTranslate;
 import org.example.server.Server;
-import org.example.server.ServerBullet;
+
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.UUID;
 
 public class CordsOfTanks extends SerialObject

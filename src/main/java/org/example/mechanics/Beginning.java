@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,7 +30,7 @@ public class Beginning extends Application {
         stage = stagee;
         Parent root = null;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/beginning.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLfiles/beginning.fxml"));
             fxmlLoader.setController(this);
             root = fxmlLoader.load();
         } catch (IOException e)

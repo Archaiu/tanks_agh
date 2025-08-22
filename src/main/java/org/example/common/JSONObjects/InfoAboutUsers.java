@@ -8,8 +8,9 @@ import java.util.ArrayList;
 
 public class InfoAboutUsers extends SerialObject
 {
-    public final int numberOfPlayer;
-    public final ArrayList<MyPair<String,Integer>> players;
+    public int numberOfPlayer;
+    public ArrayList<MyPair<String,Integer>> players;
+    public InfoAboutUsers(){}
     public InfoAboutUsers(int numberOfPlayer)
     {
         type = "InfoAboutUsers";

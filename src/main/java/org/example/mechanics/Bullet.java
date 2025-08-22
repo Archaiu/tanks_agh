@@ -5,7 +5,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Translate;
-import org.example.player.Tank;
 
 import java.util.ArrayList;
 

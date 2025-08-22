@@ -1,7 +1,7 @@
 package org.example.common.JSONObjects;
 
-import org.example.player.Controller;
-import org.example.player.Gamer;
+import org.example.player.gameLogic.Controller;
+import org.example.player.gameLogic.Gamer;
 
 public class PlayersKeys extends SerialObject
 {

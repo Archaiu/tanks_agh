@@ -8,8 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.player.Comunication;
-import org.example.player.Gamer;
+import org.example.player.gameLogic.Comunication;
+import org.example.player.gameLogic.Gamer;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class Waiting implements Window
         Parent root = null;
         try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/waiting.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLfiles/waiting.fxml"));
             loader.setController(this);
             root = loader.load();
         } catch ( IOException e)

@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.example.common.JSONObjects.EndGame;
 import org.example.common.JSONObjects.InfoAboutUsers;
-import org.example.common.MapInfo;
+import org.example.common.others.MapInfo;
 import org.example.common.JSONObjects.SerialObject;
-import java.io.*;
+
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class Server {
     private final ArrayList<Player> players_ = new ArrayList<>();
     public ArrayList<Player> getPlayers_() {return players_;}
     private int[] results;
-    public final int port = 5556;
+    public int port = 5555;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private Round round;
@@ -47,7 +47,7 @@ public class Server {
         }
         return _server;
     }
-    private static void initalizeServer() throws IOException, InterruptedException
+    private static void initalizeServer()
     {
         _server = Server.getInstance();
         try{_server._lobby.createServerForPublic();}
@@ -135,6 +135,7 @@ public class Server {
         Lobby.getInstance().resetLobby();
         Player.deletePlayers();
         _server = new Server();
+        initalizeServer();
     }
 
     public void updateResult(int i)

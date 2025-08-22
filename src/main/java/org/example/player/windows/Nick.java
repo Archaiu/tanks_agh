@@ -9,8 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.example.player.Comunication;
-import org.example.player.Gamer;
+import org.example.player.gameLogic.Comunication;
+import org.example.player.gameLogic.Gamer;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class Nick implements Window
         Stage stage = Gamer.get_gamer().stage;
         Parent root = null;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/beginning.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLfiles/beginning.fxml"));
             fxmlLoader.setController(this);
             root = fxmlLoader.load();
         } catch (IOException e)       {

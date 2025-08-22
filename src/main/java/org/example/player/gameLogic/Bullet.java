@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.gameLogic;
 
 
 import javafx.scene.paint.Color;

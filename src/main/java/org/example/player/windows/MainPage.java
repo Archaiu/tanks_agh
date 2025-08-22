@@ -3,8 +3,8 @@ package org.example.player.windows;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import org.example.player.Controller;
-import org.example.player.Gamer;
+import org.example.player.gameLogic.Controller;
+import org.example.player.gameLogic.Gamer;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class MainPage implements Window
         Parent root = null;
         try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLfiles/mainPage.fxml"));
             loader.setController(_controller);
             root = loader.load();
         } catch (IOException e) {

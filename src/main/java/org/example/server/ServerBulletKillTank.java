@@ -79,15 +79,10 @@ public class ServerBulletKillTank {
     {
         double bottom = Math.min(tab[0].getY(), tab[1].getY());
         double top = Math.max(tab[0].getY(), tab[1].getY());
-        if ( tab[0].getX() <= _x && _x <= tab[3].getX() && bottom <= _y && _y <= top )
-        {
-            return true;
-        }
-        return false;
+        return tab[0].getX() <= _x && _x <= tab[3].getX() && bottom <= _y && _y <= top;
     }
     private boolean caseWithObliqueLines(MyPoint2D[] tab)
     {
-        boolean rectangleCrookedRight = tab[0].getY() < tab[1].getY();
         double a1, a2, b1, b2;
         if ( tab[0].getX() <= _x && _x <= tab[1].getX())
         {

@@ -2,8 +2,7 @@ package org.example.server;
 
 
 import javafx.geometry.Point2D;
-import org.example.common.Debugger;
-import org.example.common.MapInfo;
+import org.example.common.others.MapInfo;
 import org.example.common.POJO.MyCircle;
 import org.example.common.POJO.MyTranslate;
 

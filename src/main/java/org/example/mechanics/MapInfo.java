@@ -2,13 +2,10 @@ package org.example.mechanics;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Pair;
 
 import javax.management.BadAttributeValueExpException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -22,7 +19,7 @@ public class MapInfo {
     public static void setCords()
     {
         System.out.println("Try to inicjalize the Map");
-        FXMLLoader fxmlLoader = new FXMLLoader(MapInfo.class.getResource("/mainPage.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MapInfo.class.getResource("/FXMLfiles/mainPage.fxml"));
         Controller controller = new Controller(10);
         fxmlLoader.setController(controller);
         try {

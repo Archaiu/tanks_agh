@@ -10,9 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.example.player.Comunication;
-import org.example.player.Gamer;
-import org.example.server.Server;
+import org.example.player.gameLogic.Comunication;
+import org.example.player.gameLogic.Gamer;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -24,22 +23,35 @@ public class Host extends Application
     @FXML
     public Button confirm;
     @FXML
-    public TextField host;
+    public TextField host, port;
     @FXML
     public Label error;
-    public void start(Stage stage) throws IOException
+
+    public Scene scene;
+    public void start(Stage stage)
+    {
+        Gamer.get_gamer().stage = stage;
+        loadEverything();
+
+    }
+
+    public void loadEverything()
     {
         Parent root = null;
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/writeIP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLfiles/writeIP.fxml"));
         loader.setController(this);
-        root = loader.load();
-
-        Scene scene = new Scene(root);
+        try
+        {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        scene = new Scene(root);
         Gamer.get_gamer()._windows._host = this;
-        Gamer.get_gamer().stage = stage;
-        stage.setScene(scene);
-        stage.show();
+
+        Gamer.get_gamer().stage.setScene(scene);
+        Gamer.get_gamer().stage.show();
     }
 
     public void confirmIP(ActionEvent a)
@@ -49,7 +61,10 @@ public class Host extends Application
         try
         {
             if (host.getText().isEmpty()) host.setText("localhost");
-            socket = new Socket(host.getText(), Server.getInstance().port);
+            if (port.getText().isEmpty()) port.setText("5555");
+            socket = new Socket(host.getText(), Integer.parseInt(port.getText()));
+            Gamer.get_gamer().serverIp = host.getText();
+            Gamer.get_gamer().serverPort = port.getText();
             Gamer.get_gamer().startConnection(socket);
             synchronized (Gamer.get_gamer().blocade){
                 Comunication.getInstance().sendMessage("PLAYER");
@@ -67,7 +82,7 @@ public class Host extends Application
         {
             if ( socket != null ) { Gamer.get_gamer().disconnect(); }
             System.out.println("Can't connect to server");
-            error.setText("Can't connect to server on this IP, try once again");
+            error.setText("Can't connect to server on this IP and port, try once again");
         }
     }
     public static void main(String[] args)

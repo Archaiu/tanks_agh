@@ -1,4 +1,4 @@
-package org.example.player;
+package org.example.player.gameLogic;
 
 public class Informations
 {

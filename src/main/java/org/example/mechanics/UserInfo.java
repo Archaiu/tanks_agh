@@ -1,7 +1,7 @@
 package org.example.mechanics;
 
 import javafx.stage.Stage;
-import org.example.player.Tank;
+
 
 public class UserInfo {
 

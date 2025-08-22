@@ -1,18 +1,12 @@
-package org.example.player;
+package org.example.player.gameLogic;
 
-import javafx.animation.AnimationTimer;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import org.example.common.Debugger;
+import org.example.common.others.Debugger;
 import org.example.common.JSONObjects.CordsOfTanks;
 import org.example.common.POJO.MyPair;
 import org.example.common.POJO.MyRotate;
 import org.example.common.POJO.MyTranslate;
-import org.example.server.Server;
-import org.example.server.ServerTank;
 
-import java.awt.datatransfer.Transferable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,7 +14,7 @@ import java.util.UUID;
 
 public class Engine
 {
-    private HashMap<UUID,Bullet> bullets =  new HashMap<>();
+    private HashMap<UUID, Bullet> bullets =  new HashMap<>();
     public int[] results;
 
     private Engine()
@@ -36,15 +30,15 @@ public class Engine
     {
         Debugger.getDebugger().printPlayersFromPlayer();
         Gamer.get_gamer()._windows._mainPage.getController().addTanksToController();
-        AnimationTimer timer = new AnimationTimer() {
-            public void handle(long now)
-            {
-                Controller controller = Gamer.get_gamer()._windows._mainPage.getController();
-            }
-        };
+//        AnimationTimer timer = new AnimationTimer() {
+//            public void handle(long now)
+//            {
+//                Controller controller = Gamer.get_gamer()._windows._mainPage.getController();
+//            }
+//        };
         results = new int[number];
         Gamer.get_gamer()._windows._mainPage.getController().updateResults();
-        timer.start();
+//        timer.start();
     }
 
     private void updateCordsOfTank(ArrayList<MyPair<MyTranslate, MyRotate>> tanks)
@@ -100,5 +94,10 @@ public class Engine
             }
         }
         bullets = newBullets;
+    }
+
+    public void reset()
+    {
+        results = new int[Gamer.get_gamer().players.size()];
     }
 }

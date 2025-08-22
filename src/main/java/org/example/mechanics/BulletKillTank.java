@@ -1,7 +1,6 @@
 package org.example.mechanics;
 
 import javafx.geometry.Point2D;
-import org.example.player.Tank;
 
 import java.util.Arrays;
 

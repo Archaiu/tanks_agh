@@ -5,11 +5,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(to bottom, #8A9A5B, #6F8B77, #355E3B);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="240.0" layoutY="7.0" prefHeight="26.0" prefWidth="120.0" text="Waiting for all players" />
       <Button fx:id="button" alignment="BASELINE_LEFT" contentDisplay="CENTER" layoutX="244.0" layoutY="335.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="50.0" prefWidth="111.0" text="Start with players, which are already" textOverrun="CLIP" visible="false" wrapText="true" />
-      <VBox fx:id="users" layoutY="33.0" prefHeight="292.0" prefWidth="600.0" />
+      <VBox fx:id="users" layoutX="7.0" layoutY="33.0" prefHeight="292.0" prefWidth="600.0" />
    </children>
 </AnchorPane>

@@ -1,10 +1,7 @@
-package org.example.common;
+package org.example.common.others;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import org.example.common.POJO.MyRectangle;
-import org.example.player.Controller;
+import org.example.player.gameLogic.Controller;
 import org.example.common.POJO.MyLine;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,7 +11,6 @@ import org.w3c.dom.NodeList;
 import javax.management.BadAttributeValueExpException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -123,7 +119,7 @@ public class MapInfo {
 
     public static void readDataFromFXMLByHand() {
         try {
-            URL fxmlUrl = Controller.class.getResource("/mainPage.fxml");
+            URL fxmlUrl = Controller.class.getResource("/FXMLfiles/mainPage.fxml");
             if (fxmlUrl == null) {
                 System.err.println("There is no FXML file");
                 return;

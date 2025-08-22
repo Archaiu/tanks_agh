@@ -1,4 +1,4 @@
-package org.example.common;
+package org.example.common.others;
 
 public class PhotoInfo
 {

@@ -9,9 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import org.example.common.PhotoInfo;
-import org.example.player.Comunication;
-import org.example.player.Gamer;
+import org.example.common.others.PhotoInfo;
+import org.example.player.gameLogic.Comunication;
+import org.example.player.gameLogic.Gamer;
 
 
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class Uni implements Window
         Parent root = null;
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/uni.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLfiles/uni.fxml"));
             fxmlLoader.setController(this);
             root = fxmlLoader.load();
         } catch (IOException e) {

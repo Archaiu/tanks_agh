@@ -1,12 +1,10 @@
-/* Styl dla ImageView, gdy ma klasę 'uni-selected-border' */
 .uni-selected-border {
-    -fx-border-color: deepskyblue; /* Kolor ramki */
-    -fx-border-width: 3px;         /* Grubość ramki */
-    -fx-border-radius: 5px;        /* Zaokrąglenie rogów */
-    -fx-padding: 2px;              /* Odstęp między obrazkiem a ramką */
+    -fx-border-color: deepskyblue;
+    -fx-border-width: 3px;
+    -fx-border-radius: 5px;
+    -fx-padding: 2px;
 }
 
-/* Ukrycie domyślnego "kółka" RadioButtona */
 .radio-button .radio {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -20,7 +18,6 @@
     -fx-background-color: transparent;
 }
 
-/* Opcjonalnie: Jeśli RadioButton ma jakiś tekst, ukryj go również */
 .radio-button .text {
     -fx-font-size: 0;
     -fx-fill: transparent;

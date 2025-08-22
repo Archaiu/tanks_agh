@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.player.Tank;
 
 import java.io.IOException;
 
@@ -16,7 +15,7 @@ public class MainPage{
     public void showMainPage()
     {
         System.out.println("Try to load mainPage");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/mainPage.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLfiles/mainPage.fxml"));
         Parent root = null;
         Controller contr= UserInfo.getClasess(_number).get_controller();
         try {

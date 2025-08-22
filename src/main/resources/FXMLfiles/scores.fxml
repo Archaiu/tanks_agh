@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(to bottom, #8A9A5B, #6F8B77, #355E3B);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView fx:id="table" layoutX="163.0" layoutY="3.0" prefHeight="379.0" prefWidth="230.0">
         <columns>
@@ -15,6 +13,5 @@
             <TableColumn fx:id="result" prefWidth="75.0" text="Result" />
         </columns>
       </TableView>
-      <Button layoutX="405.0" layoutY="228.0" mnemonicParsing="false" onAction="#buttonClicked" text="Click to join lobby once again" />
    </children>
 </AnchorPane>

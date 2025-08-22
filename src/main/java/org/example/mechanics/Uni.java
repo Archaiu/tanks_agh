@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import org.example.player.Tank;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,7 +61,7 @@ public class Uni {
         Parent root = null;
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/uni.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLfiles/uni.fxml"));
             fxmlLoader.setController(this);
             root = fxmlLoader.load();
         } catch (IOException e) {

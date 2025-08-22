@@ -1,6 +1,6 @@
-package org.example.common;
+package org.example.common.others;
 
-import org.example.player.Gamer;
+import org.example.player.gameLogic.Gamer;
 
 import java.util.HashMap;
 

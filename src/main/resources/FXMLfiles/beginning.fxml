@@ -18,7 +18,7 @@
       <Label fx:id="messageLabel" layoutX="200.0" layoutY="230.0" prefHeight="18.0" prefWidth="190.0" textFill="red" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="376.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@pngwing.com.png" />
+            <Image url="@../pngwing.com.png" />
          </image>
       </ImageView>
       <Label layoutX="182.0" layoutY="39.0" text="TANKS AGH">

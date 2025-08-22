@@ -8,8 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.example.player.Comunication;
-import org.example.player.Gamer;
+import org.example.player.gameLogic.Comunication;
+import org.example.player.gameLogic.Gamer;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class Connection implements Window
         Parent root = null;
         try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lobby.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLfiles/lobby.fxml"));
             loader.setController(this);
             root = loader.load();
         } catch (IOException e)

@@ -1,8 +1,7 @@
-package org.example.player;
+package org.example.player.gameLogic;
 
 import com.google.gson.Gson;
 import org.example.common.JSONObjects.*;
-import org.example.server.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class Comunication
                                 {
                                     String line = reader.readLine();
                                     if (line == null) stopConnection = true;
-                                    else if (line.equals(Server.getInstance().END_MESSAGE())) break;
+                                    else if (line.equals(Gamer.get_gamer().END_MESSAGE())) break;
                                     else newInput.append(line).append('\n');
                                 }
                                 String input = newInput.toString().trim();
@@ -105,9 +104,9 @@ public class Comunication
     }
     private String getMessageToSend()
     {
-        if (Gamer.get_gamer().openWindow.equals("game")) { return gson.toJson(new PlayersKeys(1)) + "\n" + Server.getInstance().END_MESSAGE(); }
-        if (queue.isEmpty()){return "PING\n" + Server.getInstance().END_MESSAGE();}
-        return queue.poll() + "\n" + Server.getInstance().END_MESSAGE();
+        if (Gamer.get_gamer().openWindow.equals("game")) { return gson.toJson(new PlayersKeys(1)) + "\n" + Gamer.get_gamer().END_MESSAGE(); }
+        if (queue.isEmpty()){return "PING\n" + Gamer.get_gamer().END_MESSAGE();}
+        return queue.poll() + "\n" + Gamer.get_gamer().END_MESSAGE();
     }
     public void sendMessage(String message)
     {
@@ -236,19 +235,9 @@ public class Comunication
             case "InfoAboutUsers" ->
             {
                 InfoAboutUsers infoAboutUsers = gson.fromJson(input, InfoAboutUsers.class);
-
-                for ( int i = 0; i < infoAboutUsers.players.size(); i++ )
-                {
-                    if ( i == infoAboutUsers.numberOfPlayer)
-                    {
-                        PlayerInformation.createInstance(infoAboutUsers.players.get(i));
-                        Gamer.get_gamer().players.add(PlayerInformation.getInstance());
-                    }
-                    else Gamer.get_gamer().players.add(new OthersInformation(infoAboutUsers.players.get(i)));
-                }
-                Gamer.get_gamer().numberOfPlayer = infoAboutUsers.numberOfPlayer;
                 javafx.application.Platform.runLater(()->
                 {
+                    Gamer.get_gamer().addPlayers(infoAboutUsers);
                     synchronized (Gamer.get_gamer().blocade)
                     {
                         Gamer.get_gamer().loadGameWindow();
@@ -275,6 +264,13 @@ public class Comunication
 
             }
         }
+
+    }
+
+    public void reset()
+    {
+        stopConnection = true;
+        queue = new LinkedBlockingQueue<>();
 
     }
 }

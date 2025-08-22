@@ -10,9 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.example.common.POJO.MyPair;
-import org.example.player.Engine;
-import org.example.player.Gamer;
-import org.example.player.PlayerScore;
+import org.example.player.gameLogic.Engine;
+import org.example.player.gameLogic.Gamer;
+import org.example.player.gameLogic.PlayerScore;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class Results implements Window
         Parent root = null;
         try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/scores.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLfiles/scores.fxml"));
             loader.setController(this);
             root = loader.load();
         } catch (IOException e) {
@@ -48,7 +48,7 @@ public class Results implements Window
         }
 
         place.setCellValueFactory(cellData -> cellData.getValue().placeProperty());
-        nick.setCellValueFactory(cellData -> cellData.getValue().placeProperty());
+        nick.setCellValueFactory(cellData -> cellData.getValue().nicknameProperty());
         result.setCellValueFactory(cellData -> cellData.getValue().scoreProperty() );
         players = FXCollections.observableArrayList();
 
@@ -78,8 +78,25 @@ public class Results implements Window
         }
     }
 
+    public void printResults()
+    {
+        for ( var el : players)
+        {
+            System.out.println(el);
+        }
+    }
+
     public void buttonClicked(ActionEvent actionEvent)
     {
-        System.out.println("Nothing happend at this moment");
+        Gamer.get_gamer().resetEverything();
     }
+
+    public void setDataToTest()
+    {
+        table = new TableView<>();
+        place = new TableColumn<>("Place");
+        nick = new TableColumn<>("Nick");
+        result = new TableColumn<>("Result");
+    }
+
 }
